@@ -1,14 +1,22 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.views import View
-from django.views.generic import TemplateView, ListView
+from django.views.generic import TemplateView, ListView, DetailView
 from .models import Movie, Genre
 
-
+class MovieDetailView(DetailView):
+    model = Movie
+    template_name = 'movie_detail.html'
+    context_object_name = 'movie'
 
 class MovieView(ListView):
     template_name = 'movies.html'
     model = Movie
+    context_object_name = 'movies'
+
+    def get_movie_in_gen(self, gen):
+        lst = Movie.objects.filter(genre=gen)
+        return lst
 
 
 # class MovieView(TemplateView):
