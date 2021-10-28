@@ -6,7 +6,7 @@
     <a class='btn btn-secondary' href='{% url 'index' %}?s=released'>Sort by date</a>
     <a class='btn btn-secondary' href='{% url 'index' %}?s=rating'>Sort by rating</a>
     <ul>
-        {% for movie in movies %}
+        {% for movie in object_list %}
         <li>
             {{movie.rating}} {{ movie.title }} {{ movie.released.year }} - {{ movie.genre.name }}
         </li>
