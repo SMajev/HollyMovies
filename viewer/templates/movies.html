@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1>All Movies</h1>
+    <a class='btn btn-secondary' href='{% url 'index' %}?s=title'>Sort by name</a>
+    <a class='btn btn-secondary' href='{% url 'index' %}?s=released'>Sort by date</a>
+    <a class='btn btn-secondary' href='{% url 'index' %}?s=rating'>Sort by rating</a>
+    <ul>
+        {% for movie in movies %}
+        <li>
+            {{movie.rating}} {{ movie.title }} {{ movie.released.year }} - {{ movie.genre.name }}
+        </li>
+        {% endfor %}
+    </ul>
+{% endblock %}
