@@ -2,9 +2,8 @@
 
 {% block content %}
     <h1>{{movie.title}}</h1>
-    <p>Created: {{movie.created}}</p>
-    <h3>Rating: {{movie.rating}}</h3>
-    <h3>Released Date: {{movie.released}}</h3>
-    <h3>Genre: <a href="{% url 'filtered-movies'%}?gen={{movie.genre.name}}">{{movie.genre.name}}</a></h3>
+    <p>Released Date: {{movie.released}}</p>    
+    <p>Genre: <a href="{% url 'filtered-movies'%}?genre={{movie.genre.name}}">{{movie.genre.name}}</a></p>
+    <p>Rating: {{movie.rating}}</p>
     <p>Description: {{movie.description}}</p>
 {% endblock %}

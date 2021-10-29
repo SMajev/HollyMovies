@@ -2,6 +2,7 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from django.views import View
 from django.views.generic import TemplateView, ListView, DetailView
+from django.core.paginator import Paginator
 from .models import Movie, Genre
 
 
@@ -21,6 +22,7 @@ class MovieView(ListView):
     template_name = 'movies.html'
     model = Movie
     context_object_name = 'movies'
+    paginate_by = 2
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -45,7 +47,7 @@ class GenreMoviesView(ListView):
     template_name = 'genre_movies.html'
     model = Movie
     context_object_name = 'genre_movies'
-
+    
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         genre = self.request.GET.get('genre')

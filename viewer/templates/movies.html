@@ -12,4 +12,17 @@
         </li>
         {% endfor %}
     </ul>
+    <div class='pagination'>
+        <span class='step-links'>
+            {% if is_paginated %}
+                {% if page_obj.has_previous %}
+                    <a class='btn btn-outline-info ' href='?page=1'>First</a>
+                {% endif %}
+            {% endif %}
+
+        <span class='current'>
+            Page {{ number }} of {{ paginator.num_pages }}
+
+        </span>
+    </div> 
 {% endblock %}
