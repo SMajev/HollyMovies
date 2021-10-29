@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<ul>
+    {% for category  in categorys %}
+
+    <li>
+        <a href="{% url 'category_posts' %}?category={{category.name}}">{{category.name}}</a>
+    </li>
+    {% endfor %}
+<ul>
+{% endblock content %}
