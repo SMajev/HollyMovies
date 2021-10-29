@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1>Movie in {{genre}}</h1>
+    <ul>
+        {% for movie in gen %}
+            <li>
+                {{movie.rating}} <a href="{% url 'movie-detail' pk=movie.id %}"> {{ movie.title }}</a>  {{ movie.released.year }} - {{ movie.genre.name }}
+            </li>
+        {% endfor %}
+    </ul>
+{% endblock %}
