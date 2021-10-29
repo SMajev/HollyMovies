@@ -3,9 +3,9 @@
 {% block content %}
     <h1>Movie in {{genre}}</h1>
     <ul>
-        {% for movie in gen %}
+        {% for movie in genre_movies %}
             <li>
-                {{movie.rating}} <a href="{% url 'movie-detail' pk=movie.id %}"> {{ movie.title }}</a>  {{ movie.released.year }} - {{ movie.genre.name }}
+                <a href="{% url 'movie-detail' pk=movie.id %}"> {{ movie.title }}</a>  {{ movie.released.year }} - {{ movie.genre.name }}
             </li>
         {% endfor %}
     </ul>

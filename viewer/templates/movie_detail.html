@@ -5,6 +5,6 @@
     <p>Created: {{movie.created}}</p>
     <h3>Rating: {{movie.rating}}</h3>
     <h3>Released Date: {{movie.released}}</h3>
-    <h3>Genre: {{movie.genre.name}}</h3>
+    <h3>Genre: <a href="{% url 'filtered-movies'%}?gen={{movie.genre.name}}">{{movie.genre.name}}</a></h3>
     <p>Description: {{movie.description}}</p>
 {% endblock %}

@@ -1,11 +1,10 @@
 from django.urls import path
-from .views import hello, movies, genres, MovieView, MovieDetailView, GenreView
+from .views import GenresList, MovieView, MovieDetailView, GenreMoviesView
 
 urlpatterns = [
-    path('hello/<s0>', hello),
-    path('', movies, name='index'),
-    path('genres/', genres, name='genres_lst'),
-    path('movies/<int:pk>', MovieDetailView.as_view(), name='movie-detail'),
+    path('', MovieView.as_view(), name='index'),
+    path('genres/', GenresList.as_view(), name='genres_lst'),   
     path('movies/', MovieView.as_view(), name='movies'),
-    path('genres/<str:gen>', GenreView, name='filtered-movies')
+    path('movies/<int:pk>', MovieDetailView.as_view(), name='movie-detail'),
+    path('movies-genre/', GenreMoviesView.as_view(), name='filtered-movies')
 ]

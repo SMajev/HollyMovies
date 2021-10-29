@@ -2,13 +2,13 @@
 
 {% block content %}
     <h1>All Movies</h1>
-    <a class='btn btn-secondary' href='{% url 'index' %}?s=title'>Sort by name</a>
-    <a class='btn btn-secondary' href='{% url 'index' %}?s=released'>Sort by date</a>
-    <a class='btn btn-secondary' href='{% url 'index' %}?s=rating'>Sort by rating</a>
+    <a class='btn btn-secondary' href='{% url 'movies' %}?s=title'>Sort by name</a>
+    <a class='btn btn-secondary' href='{% url 'movies' %}?s=released'>Sort by date</a>
+    <a class='btn btn-secondary' href='{% url 'movies' %}?s=rating'>Sort by rating</a>
     <ul>
         {% for movie in movies %}
         <li>
-            {{movie.rating}} <a href="{% url 'movie-detail' pk=movie.id %}"> {{ movie.title }}</a>  {{ movie.released.year }} - {{ movie.genre.name }} 
+            <a href="{% url 'movie-detail' pk=movie.id %}"> {{ movie.title }}</a>  {{ movie.released.year }} - {{ movie.genre.name }} 
         </li>
         {% endfor %}
     </ul>
