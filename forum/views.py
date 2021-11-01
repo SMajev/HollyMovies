@@ -14,15 +14,14 @@ class PostsList(ListView):
     model = Post
     context_object_name = 'posts'
 
-class CategoryPostsList(ListView):
-    template_name = 'category_posts.html'
-    model = Post
-    context_object_name = 'category_posts'
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        category = self.request.GET.get('category')
-        context["posts"] = context['posts'].filter(category__name=category)
-        return context
+class CategoryPostsList(View):
+    def get(self, request, cat):
+        category_posts = Post.objects.filter(category__name=cat)
+        print(category_posts)
+        context = {
+            'category_posts': category_posts
+        }
+        return render(request, 'category_posts.html', context)
     
 
 class DetailView(DetailView):

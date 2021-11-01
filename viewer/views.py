@@ -22,7 +22,7 @@ class MovieView(ListView):
     template_name = 'movies.html'
     model = Movie
     context_object_name = 'movies'
-    paginate_by = 2
+    # paginate_by = 2
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
