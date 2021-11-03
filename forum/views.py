@@ -15,6 +15,7 @@ class PostsList(ListView):
     context_object_name = 'posts'
 
 class CategoryPostsList(View):
+    model = Post
     def get(self, request, cat):
         category_posts = Post.objects.filter(category__name=cat)
         print(category_posts)

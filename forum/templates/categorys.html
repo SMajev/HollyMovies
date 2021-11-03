@@ -1,12 +1,17 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<ul>
-    {% for category  in categorys %}
-
-    <li>
-        <a href="{% url 'category_posts' cat=category.name %}">{{category.name}}</a>
-    </li>
+<strong><h1> Forum </h1></strong>
+<h4> Topics </h4>
+<body>
+<table>
+<tbody>
+    {% for category  in categorys %}    
+        <tr>
+            <td><a href="{% url 'category_posts' cat=category.name %}">{{category.name}}</a></td>
+        </tr>
     {% endfor %}
-<ul>
+</tbody>    
+</table>
+</bdoy>
 {% endblock content %}

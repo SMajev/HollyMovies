@@ -6,9 +6,7 @@ from django.contrib.auth.models import User
 
 class Category(models.Model):
     name = models.CharField(max_length=50)
-
-
-
+    
     def __str__(self):
         return self.name
 
@@ -22,6 +20,9 @@ class Post(models.Model):
     category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name='category_posts')
     publish = models.DateTimeField(default=timezone.now())
     update = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        ordering = ('-publish',)
 
     def __str__(self):
         return self.title

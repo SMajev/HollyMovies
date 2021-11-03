@@ -22,7 +22,7 @@ class MovieView(ListView):
     template_name = 'movies.html'
     model = Movie
     context_object_name = 'movies'
-    # paginate_by = 2
+    paginate_by = 5
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -44,14 +44,14 @@ class MovieView(ListView):
 
 
 class GenreMoviesView(ListView):
-    template_name = 'genre_movies.html'
+    template_name = 'movies.html'
     model = Movie
-    context_object_name = 'genre_movies'
+    context_object_name = 'movies'
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         genre = self.request.GET.get('genre')
-        context['genre_movies'] = context['genre_movies'].filter(genre__name=genre)
+        context['movies'] = context['movies'].filter(genre__name=genre)
         return context
         
 
