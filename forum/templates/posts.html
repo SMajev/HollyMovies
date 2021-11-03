@@ -7,10 +7,26 @@
         {% for post  in posts %}
 
         <li>
-            <a href="{% url 'post' pk=post.id %}"{{post}}>{{post.title}}</a>
+            <h4><a href="{% url 'post' pk=post.id %}"{{post}}>{{post.title}}</a></h4>
         </li>
         {% endfor %}
     <ul>
 </div>
+    <div>    
+        {% if page_obj.has_previous %}
+            <a class='btn btn-secondary' href='?page=1'>&laquo; first </a>
+            <a class='btn btn-secondary' href='?page={{ page_obj.previous_page_number }}'> previous</a>
+        {% else %}
+            <a class='btn btn-secondary' href=''>&laquo; first </a>
+            <a class='btn btn-secondary' href=''> previous</a>
+        {% endif %}
+        {% if page_obj.has_next %}
+            <a class='btn btn-secondary' href='?page={{ page_obj.next_page_number }}'>next</a>
+            <a class='btn btn-secondary' href='?page={{ page_obj.paginator.num_pages }}'>last &raquo; </a>
+        {% else %}
+        <a class='btn btn-secondary' href=''>next</a>
+            <a class='btn btn-secondary' href=''>last &raquo; </a>
+        {% endif %}   
+    </div>
 </body>
 {% endblock %}

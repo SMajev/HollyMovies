@@ -4,4 +4,5 @@
     <p>{{post.body}}</p>
     <h4>{{post.author}}</h4>
     <h6>{{post.publish}}<h6>
+    <p><a href="{% url 'email_share' pk=post.id %}">Share</a></p>
 {% endblock %}

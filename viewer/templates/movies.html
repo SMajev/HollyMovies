@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 
 {% block content %}
+<body>
     <h1>All Movies</h1>
     <a class='btn btn-secondary' href='{% url 'movies' %}?s=title'>Sort by name</a>
     <a class='btn btn-secondary' href='{% url 'movies' %}?s=released'>Sort by date</a>
@@ -8,13 +9,14 @@
     <ul>
         {% for movie in movies %}
         <li>
-            <a href="{% url 'movie-detail' pk=movie.id %}"> {{ movie.title }}</a>  {{ movie.released.year }} - {{ movie.genre.name }} 
+            <h5><a href="{% url 'movie-detail' pk=movie.id %}"> {{ movie.title }}</a>  {{ movie.released.year }} - {{ movie.genre.name }} </h5>
         </li>
         {% endfor %}
     </ul>
     <div class='pagination'>
         Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}
-    </div>     
+    </div> 
+    <div>    
         {% if page_obj.has_previous %}
             <a class='btn btn-secondary' href='?page=1'>&laquo; first </a>
             <a class='btn btn-secondary' href='?page={{ page_obj.previous_page_number }}'> previous</a>
@@ -28,5 +30,7 @@
         {% else %}
         <a class='btn btn-secondary' href=''>next</a>
             <a class='btn btn-secondary' href=''>last &raquo; </a>
-        {% endif %}    
+        {% endif %}   
+    </div>
+    </body> 
 {% endblock %}

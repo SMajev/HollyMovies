@@ -5,7 +5,7 @@
     <ul>
         {% for genre in genres %}
         <li>
-            <a href="{% url 'filtered-movies' %}?genre={{ genre.name }}">{{genre.name}}</a>
+            <h5><a href="{% url 'filtered-movies' %}?genre={{ genre.name }}">{{genre.name}}</a></h5>
         </li>
         {% endfor %}
     </ul>
