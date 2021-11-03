@@ -2,30 +2,50 @@
 
 {% block content %}
 <body>
-<div>    
-    <ul>
-        {% for post  in posts %}
-
-        <li>
-            <h4><a href="{% url 'post' pk=post.id %}"{{post}}>{{post.title}}</a></h4>
-        </li>
-        {% endfor %}
-    <ul>
-</div>
-    <div>    
+    <div>
+        <h2 class='text-left'>
+            <strong class='text-info'>Posts</strong>
+        </h2>
+        <p class='text-right'>
+            <a class='btn btn-danger' href="{% url 'add_post' %}">Add Post</a>
+        </p>
+    </div>
+    <div>
+        <table class="list-group">
+        <tbody>
+            {% for post  in posts %}        
+            <tr class="list-group-item">
+            <span>                
+                <td>
+                    <a  href="{% url 'post' pk=post.id %}"{{post}}>
+                    <strong class='text-info'>{{post.title}}</strong><br>
+                    <small class='text-muted'>Author: {{post.author}}</small>
+                    </a>
+                </td>   
+            </span>    
+            </tr>
+            {% endfor %}
+        </tbody>
+        </table>
+    </div>
+    <br>
+        <div class='text-center'>
+        Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}
+    </div> 
+    <div class='text-center'>    
         {% if page_obj.has_previous %}
-            <a class='btn btn-secondary' href='?page=1'>&laquo; first </a>
-            <a class='btn btn-secondary' href='?page={{ page_obj.previous_page_number }}'> previous</a>
+            <a class="btn btn-link" href='?page=1'>&laquo; first </a>
+            <a class="btn btn-link" href='?page={{ page_obj.previous_page_number }}'> previous</a>
         {% else %}
-            <a class='btn btn-secondary' href=''>&laquo; first </a>
-            <a class='btn btn-secondary' href=''> previous</a>
+            <a class="btn btn-link" href=''>&laquo; first </a>
+            <a class="btn btn-link" href=''> previous</a>
         {% endif %}
         {% if page_obj.has_next %}
-            <a class='btn btn-secondary' href='?page={{ page_obj.next_page_number }}'>next</a>
-            <a class='btn btn-secondary' href='?page={{ page_obj.paginator.num_pages }}'>last &raquo; </a>
+            <a class="btn btn-link" href='?page={{ page_obj.next_page_number }}'>next</a>
+            <a class="btn btn-link" href='?page={{ page_obj.paginator.num_pages }}'>last &raquo; </a>
         {% else %}
-        <a class='btn btn-secondary' href=''>next</a>
-            <a class='btn btn-secondary' href=''>last &raquo; </a>
+        <a class="btn btn-link" href=''>next</a>
+            <a class="btn btn-link" href=''>last &raquo; </a>
         {% endif %}   
     </div>
 </body>

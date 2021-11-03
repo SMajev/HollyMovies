@@ -1,8 +1,36 @@
 {% extends 'base.html' %}
 {% block content %}
-    <h1>{{post.title}}</h1>
-    <p>{{post.body}}</p>
-    <h4>{{post.author}}</h4>
-    <h6>{{post.publish}}<h6>
-    <p><a href="{% url 'email_share' pk=post.id %}">Share</a></p>
+<body>
+<div>
+    <h3>{{post.title}}</h3>
+    <span>
+        <strong class="text-info">{{post.author}}</strong><br>
+        <br>
+        <div class='container-fluid border-dark'>
+            <p  width=1000 height=1000>{{post.body}}</p>
+        </div>
+        <br>
+        <small class="text-muted">{{post.publish}}</small>
+</div>
+<br><br>
+<div>
+    <h6>Comments:</h6>
+    <ul>
+    {% for comment in comments %}
+    <li>           
+    <div>
+        <span>
+          <strong class="text-info">{{ comment.author }} </strong><br>
+          <small class="text-muted">{{ comment.body }}</small><br>
+          <small class="text-muted">{{ comment.publish }}</small>
+        </span>
+        <p>
+          {{ comment.content|safe }}
+        </p>
+    </div>
+    </li>
+    {% endfor %}
+  </ul>
+</div>
+</body>
 {% endblock %}

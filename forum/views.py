@@ -2,20 +2,19 @@ from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse, request
 from django.views import View
 from django.views.generic import ListView, DetailView, DetailView, FormView
-from .models import Category, Post
-from .forms import EmailPostForm
+from .models import Category, Post, Comment
+from .forms import EmailPostForm, PostForm, CommentForm
 
 class CategoryList(ListView):
     template_name = 'categorys.html'
     model = Category
     context_object_name = 'categorys'
 
-class PostsList(ListView):
+
+class CategoryPostsList(ListView):
     template_name = 'posts.html'
     model = Post
     context_object_name = 'posts'
-
-class CategoryPostsList(PostsList):
     def get(self, request, cat):
         category_posts = Post.objects.filter(category__name=cat)
         print(category_posts)
@@ -29,21 +28,25 @@ class DetailView(DetailView):
     template_name = 'post_detail.html'
     model = Post
     context_object_name = 'post'
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        comments_connected = Comment.objects.filter(post=self.get_object()).order_by('-publish')
+        context['comments'] = comments_connected
+        return context
     
+    
+class AddPostForm(FormView):
+    template_name = 'post_add.html'
+    form_class = PostForm
+    success_url = '/forum/'
+    def form_valid(self, form):
+        form.save()
+        return super().form_valid(form)
+    
+    
+
 class ShareForm(FormView):
-    def post(request, pk):
-        post = get_object_or_404(Post, id=pk, status='published')
-
-        if request.method == 'POST':
-            form = EmailPostForm(request.POST)
-            if form.is_valid():
-                cd = form.cleaned_data
-        else:
-            form = EmailPostForm()
-
-        return render(
-            request, 'share.html', {
-            'post': post,
-            'form': form
-        })
+    model = Post
+    form_class = EmailPostForm
+    success_url = 'email_share'
 

@@ -1,10 +1,10 @@
 from django.contrib import admin
-from .models import Post, Category
+from .models import Post, Category, Comment
 
 @admin.register(Post)
 class PostsAdmin(admin.ModelAdmin):
     list_display = (
-        'title', 'author', 'publish', 'update'
+        'title', 'author', 'category', 'publish', 'update',
     )
     prepopulated_fields = {'slug': ('title', )}
 
@@ -12,4 +12,10 @@ class PostsAdmin(admin.ModelAdmin):
 class CategoryAdmin(admin.ModelAdmin):
     list_display = (
         'name',
+    )
+
+@admin.register(Comment)
+class CommentAdmin(admin.ModelAdmin):
+    list_display = (
+        'post', 'author', 'publish', 'update'
     )

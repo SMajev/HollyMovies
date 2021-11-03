@@ -2,34 +2,46 @@
 
 {% block content %}
 <body>
-    <h1>All Movies</h1>
+    <div>
+    <h1 class='text-center'>All Movies</h1>
+    <div class='text-center'>
     <a class='btn btn-secondary' href='{% url 'movies' %}?s=title'>Sort by name</a>
     <a class='btn btn-secondary' href='{% url 'movies' %}?s=released'>Sort by date</a>
     <a class='btn btn-secondary' href='{% url 'movies' %}?s=rating'>Sort by rating</a>
+    </div>
+    <br>
+    <div>
     <ul>
         {% for movie in movies %}
         <li>
-            <h5><a href="{% url 'movie-detail' pk=movie.id %}"> {{ movie.title }}</a>  {{ movie.released.year }} - {{ movie.genre.name }} </h5>
+            <a href="{% url 'movie-detail' pk=movie.id %}"> 
+                <span>
+                    <strong class='text-info'>{{ movie.title }}</strong>        
+                    <small class='text-muted'>{{ movie.released.year }} - {{ movie.genre.name }}</small>
+                </span>
+            </a>     
         </li>
         {% endfor %}
     </ul>
-    <div class='pagination'>
+    </div>
+
+    <div class='text-center'>
         Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}
     </div> 
-    <div>    
+    <div class='text-center'>    
         {% if page_obj.has_previous %}
-            <a class='btn btn-secondary' href='?page=1'>&laquo; first </a>
-            <a class='btn btn-secondary' href='?page={{ page_obj.previous_page_number }}'> previous</a>
+            <a class="btn btn-link" href='?page=1'>&laquo; first </a>
+            <a class="btn btn-link" href='?page={{ page_obj.previous_page_number }}'> previous</a>
         {% else %}
-            <a class='btn btn-secondary' href=''>&laquo; first </a>
-            <a class='btn btn-secondary' href=''> previous</a>
+            <a class="btn btn-link" href=''>&laquo; first </a>
+            <a class="btn btn-link" href=''> previous</a>
         {% endif %}
         {% if page_obj.has_next %}
-            <a class='btn btn-secondary' href='?page={{ page_obj.next_page_number }}'>next</a>
-            <a class='btn btn-secondary' href='?page={{ page_obj.paginator.num_pages }}'>last &raquo; </a>
+            <a class="btn btn-link" href='?page={{ page_obj.next_page_number }}'>next</a>
+            <a class="btn btn-link" href='?page={{ page_obj.paginator.num_pages }}'>last &raquo; </a>
         {% else %}
-        <a class='btn btn-secondary' href=''>next</a>
-            <a class='btn btn-secondary' href=''>last &raquo; </a>
+        <a class="btn btn-link" href=''>next</a>
+            <a class="btn btn-link" href=''>last &raquo; </a>
         {% endif %}   
     </div>
     </body> 

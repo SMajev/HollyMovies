@@ -1,17 +1,25 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<strong><h1> Forum </h1></strong>
-<h4> Topics </h4>
+<strong class='text-info'><h1 class='text-center'> Forum </h1></strong>
+<h3 class='text-info'> Topics: </h3>
 <body>
-<table>
-<tbody>
-    {% for category  in categorys %}    
-        <tr>
-            <td><a href="{% url 'category_posts' cat=category.name %}">{{category.name}}</a></td>
-        </tr>
-    {% endfor %}
-</tbody>    
-</table>
+    <table class="list-group">
+    <tbody>
+        {% for category  in categorys %}    
+            <tr class="list-group-item">
+            <td>
+                
+                <a href="{% url 'category_posts' cat=category.name %}">
+                    <strong class='text-muted'>
+                        {{category.name}}
+                    </strong>
+                </a>
+                
+            </td>
+            </tr>
+        {% endfor %}
+    </tbody>    
+    </table>
 </bdoy>
 {% endblock content %}
