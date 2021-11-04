@@ -17,7 +17,7 @@ class CategoryPostsList(ListView):
     template_name = 'posts.html'
     model = Post
     context_object_name = 'posts'
-    paginate_by = 5
+    paginate_by = 10
 
     def get_queryset(self):
         posts = super().get_queryset().filter(category__name=self.kwargs['cat'])
@@ -54,7 +54,6 @@ class DetailView(FormMixin, DetailView):
         if form.is_valid():
             print(form.cleaned_data)
             return self.form_valid(form)
-            
         else:
             return self.form_invalid(form)
 
@@ -66,8 +65,7 @@ class DetailView(FormMixin, DetailView):
         model_ins.post = self.get_object()
         model_ins.save()
         return super().form_valid(form)
-
-
+        
     
 class AddPostForm(FormView):
     template_name = 'post_add.html'

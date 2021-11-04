@@ -22,24 +22,14 @@ class MovieView(ListView):
     template_name = 'movies.html'
     model = Movie
     context_object_name = 'movies'
-    paginate_by = 5
+    paginate_by = 20
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
+    def get_queryset(self):
         sorting = self.request.GET.get('s') or ''
-
-        if sorting == 'title':
-            context['movies'] = context['movies'].order_by('title')
-
-        elif sorting == 'rating':
-            context['movies'] = context['movies'].order_by('-rating')
-
-        elif sorting == 'year':
-            context['movies'] = context['movies'].order_by('realeased')
-
+        if sorting:
+            context = super().get_queryset().order_by(sorting)
         else:
-            context['movies'] = context['movies'].all()
-
+            context = super().get_queryset().all()
         return context
 
 

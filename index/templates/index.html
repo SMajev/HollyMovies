@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<!DOCTYPE html>
+<html>
+
+    <strong><span><h1 class='text-center'> HollyMovies</h1></span><strong>
+
+    <br><br>
+   <head>
+      <title>Using Image in Webpage</title>
+   </head>
+	
+   <p class='text-center'>
+      {% load static %} <img src="{% static 'index/img/eloo.jpg' %}" width=1000 height=600 />
+   </p>
+	
+</html>
+{% endblock %}

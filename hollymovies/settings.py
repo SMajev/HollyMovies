@@ -38,7 +38,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'viewer.apps.ViewerConfig',
-    'forum.apps.ForumConfig'
+    'forum.apps.ForumConfig',
+    'index.apps.IndexConfig'
 ]
 
 MIDDLEWARE = [

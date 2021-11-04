@@ -5,12 +5,15 @@
     <div>
     <h1 class='text-center'>All Movies</h1>
     <div class='text-center'>
-    <a class='btn btn-secondary' href='{% url 'movies' %}?s=title'>Sort by name</a>
-    <a class='btn btn-secondary' href='{% url 'movies' %}?s=released'>Sort by date</a>
-    <a class='btn btn-secondary' href='{% url 'movies' %}?s=rating'>Sort by rating</a>
+    <a class='btn btn-link' href='{% url 'movies' %}?s=title'>Sort by name ^</a>
+    <a class='btn btn-link' href='{% url 'movies' %}?s=released'>Sort by date ^</a>
+    <a class='btn btn-link' href='{% url 'movies' %}?s=rating'>Sort by rating ^</a>
+    <a class='btn btn-link' href='{% url 'movies' %}?s=-title'>Sort by name v</a>
+    <a class='btn btn-link' href='{% url 'movies' %}?s=-released'>Sort by date v</a>
+    <a class='btn btn-link' href='{% url 'movies' %}?s=-rating'>Sort by rating v</a>
     </div>
     <br>
-    <div>
+    <div class='text-left'>
     <ul>
         {% for movie in movies %}
         <li>
