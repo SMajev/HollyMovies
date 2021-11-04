@@ -45,5 +45,7 @@ class Comment(models.Model):
     def __str__(self):
         return f'Comment add by {self.author} to post {self.post}'
     
+    def save(self, *args, **kwargs): # new
+        return super().save(*args, **kwargs)
     
 
