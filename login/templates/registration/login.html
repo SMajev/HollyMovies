@@ -1,16 +1,16 @@
-{% extends 'base.html' %}
-
-
+{% extends "base.html" %}
 {% block content %}
-    {% if form.errors %}{% endif %}
+    {% if form.errors %}
         <p> Your username and password does not match </p>
     {% else %}
         <p> Please log in </p>
+    {% endif %}
+
     <div class='login-form'>
-        <form action="{% url 'login' %}" method='POST'>
+        <form method='post' class='form-group'>
             {{ form.as_p }} {% csrf_token %}
             <input type='hidden' name='next' value='{{ next }}'/>
-            <p><input type='submit' value='Log-in'></p>
-        <form>
+            <p><input  type='submit' value='Log-in'></p>
+        </form>
     </div>
-{% endblock content %}
+{% endblock %}

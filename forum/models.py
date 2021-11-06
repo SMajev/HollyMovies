@@ -26,10 +26,6 @@ class Post(models.Model):
     def __str__(self):
         return self.title
 
-    def save(self, *args, **kwargs): # new
-        if not self.slug:
-            self.slug = slugify(self.title)
-        return super().save(*args, **kwargs)
     
 
 class Comment(models.Model):

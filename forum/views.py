@@ -4,8 +4,12 @@ from django.views import View
 from django.views.generic import ListView, DetailView, DetailView, FormView
 from django.views.generic.edit import ModelFormMixin, FormMixin
 from django.urls import reverse, reverse_lazy
+from django.contrib.auth.mixins import LoginRequiredMixin, AccessMixin
+from django.contrib.auth import get_user
+from django.contrib.auth.decorators import login_required
+from django.utils.decorators import method_decorator
 from .models import Category, Post, Comment
-from .forms import EmailPostForm, PostForm, CommentForm
+from .forms import PostForm, CommentForm
 
 class CategoryList(ListView):
     template_name = 'categorys.html'
@@ -48,6 +52,9 @@ class DetailView(FormMixin, DetailView):
         )
         return context
     
+    def get_success_url(self, *args, **kwargs):
+        return reverse('post', kwargs={'pk': self.kwargs['pk']})
+
     def post(self, request, *args, **kwargs):    
         self.object = self.get_object()
         form = self.get_form()
@@ -57,24 +64,17 @@ class DetailView(FormMixin, DetailView):
         else:
             return self.form_invalid(form)
 
-    def get_success_url(self, *args, **kwargs):
-        return reverse('post', kwargs={'pk': self.kwargs['pk']})
-    
     def form_valid(self, form):
-        model_ins = form.save(commit=False)
-        model_ins.post = self.get_object()
-        model_ins.save()
         return super().form_valid(form)
-        
     
-class AddPostForm(FormView):
+
+class AddPostForm(LoginRequiredMixin, FormView):
     template_name = 'post_add.html'
     form_class = PostForm
     success_url = '/forum/'
-    def form_valid(self, form):
-        form.save()
-        return super().form_valid(form)
-  
+    login_url = 'login'
+    redirect_field_name = 'index'
+
 class AddCommentForm(FormView):
     template_name = 'post_detail.html'
     form_class = CommentForm
