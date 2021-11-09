@@ -1,8 +1,6 @@
 from django.urls import path
 from .views import GenresList, MovieView, MovieDetailView, GenreMoviesView
 
-
-
 urlpatterns = [
     path('', MovieView.as_view(), name='index'),
     path('genres/', GenresList.as_view(), name='genres_lst'),   
