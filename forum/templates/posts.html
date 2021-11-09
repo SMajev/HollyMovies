@@ -6,9 +6,15 @@
         <h2 class='text-left'>
             <strong class='text-info'>{{cat_name}}</strong>
         </h2>
-        <p class='text-right'>
-            <a class='btn btn-danger' href="{% url 'add_post' %}">Add Post</a>
-        </p>
+        {% if request.user.is_authenticated %}
+            <p class='text-right'>
+                <a class='btn btn-danger' href="{% url 'add_post' %}">Add Post</a>
+            </p>
+        {% else %}
+            <p class='text-right'>
+                <a class='btn btn-danger' href="{% url 'login' %}">  If you wanna add posts Log-In</a>
+            </p>
+        {% endif %}
     </div>
     <div>
         <table class="list-group">

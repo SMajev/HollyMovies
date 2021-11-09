@@ -78,7 +78,7 @@ class AddPostForm(LoginRequiredMixin, FormView):
     login_url = 'login'
     redirect_field_name = 'index'
     def form_valid(self, form):
-        form.instance.aithor = self.request.user
+        form.instance.author = self.request.user
         form.save()
         return super().form_valid(form)
         

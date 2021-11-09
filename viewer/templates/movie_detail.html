@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 
 {% block content %}
+    <img src="{{movie.image}}">
     <h1>{{movie.title}}</h1>
     <p>Released Date: {{movie.released}}</p>    
     <p>Genre: <a href="{% url 'filtered-movies'%}?genre={{movie.genre.name}}">{{movie.genre.name}}</a></p>
