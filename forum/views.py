@@ -11,6 +11,7 @@ from django.utils.decorators import method_decorator
 from .models import Category, Post, Comment
 from .forms import PostForm, CommentForm
 
+
 class CategoryList(ListView):
     template_name = 'categorys.html'
     model = Category
@@ -33,7 +34,6 @@ class CategoryPostsList(ListView):
         context['cat_name'] = cat
         context['form'] = CommentForm
         return context
-    
     
 
 class DetailView(FormMixin, DetailView):
@@ -69,8 +69,6 @@ class DetailView(FormMixin, DetailView):
         form.instance.author = self.request.user
         form.save()
         return super().form_valid(form)
-
-
 
 
 class AddPostForm(LoginRequiredMixin, FormView):
