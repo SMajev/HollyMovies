@@ -1,5 +1,5 @@
 from django.shortcuts import render, get_object_or_404
-from django.http import HttpResponse, request
+from django.http import HttpResponse, request, HttpRequest
 from django.views import View
 from django.views.generic import ListView, DetailView, DetailView, FormView
 from django.views.generic.edit import ModelFormMixin, FormMixin
@@ -37,9 +37,9 @@ class CategoryPostsList(ListView):
     
 
 class DetailView(FormMixin, DetailView):
-    template_name = 'post_detail.html'
     model = Post
     form_class = CommentForm
+    template_name = 'post_detail.html'
     context_object_name = 'post'
     
     def get_context_data(self, **kwargs):
@@ -63,10 +63,15 @@ class DetailView(FormMixin, DetailView):
             return self.form_valid(form)
         else:
             return self.form_invalid(form)
-
-    def form_valid(self, form):
-        return super().form_valid(form)
     
+    def form_valid(self, form):
+        form.instance.post = self.get_object()
+        form.instance.author = self.request.user
+        form.save()
+        return super().form_valid(form)
+
+
+
 
 class AddPostForm(LoginRequiredMixin, FormView):
     template_name = 'post_add.html'
@@ -74,12 +79,18 @@ class AddPostForm(LoginRequiredMixin, FormView):
     success_url = '/forum/'
     login_url = 'login'
     redirect_field_name = 'index'
+    def form_valid(self, form):
+        form.instance.aithor = self.request.user
+        form.save()
+        return super().form_valid(form)
+        
 
 class AddCommentForm(FormView):
     template_name = 'post_detail.html'
     form_class = CommentForm
     success_url = '/forum/'
     def form_valid(self, form):
+        form.instance.author = self.request.user
         form.save()
         return super().form_valid(form)
 
