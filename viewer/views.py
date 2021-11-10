@@ -1,9 +1,9 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse
 from django.views import View
 from django.views.generic import TemplateView, ListView, DetailView
 from django.core.paginator import Paginator
-from .models import Movie, Genre
+from .models import Movie, Genre, CommentMovie
 
 
 class GenresList(ListView):
@@ -16,6 +16,15 @@ class MovieDetailView(DetailView):
     template_name = 'movie_detail.html'
     model = Movie
     context_object_name = 'movie'
+    def get_context_data(self, *args, **kwargs):
+        context = super().get_context_data(*args, **kwargs)
+        context['pk'] = self.object.pk
+        context['movie'] = get_object_or_404(Movie,
+                                                pk=self.kwargs['pk']
+                                            )
+        context['comments'] = CommentMovie.objects.all()
+        return context
+
 
 
 class MovieView(ListView):

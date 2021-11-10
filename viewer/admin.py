@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Genre, Movie
+from .models import Genre, Movie, CommentMovie
 
 
 
@@ -16,3 +16,10 @@ class MovieAdmin(admin.ModelAdmin):
 @admin.register(Genre)
 class GenreAdmin(admin.ModelAdmin):
     list_display = ('name', )
+
+
+@admin.register(CommentMovie)
+class ComMovAdmin(admin.ModelAdmin):
+    list_display = (
+        'author', 'movie', 'publish', 'edit',  
+    )

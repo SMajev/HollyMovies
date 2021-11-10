@@ -1,10 +1,19 @@
 {% extends 'base.html' %}
 
 {% block content %}
+<div>
     <img src="{{movie.image}}">
     <h1>{{movie.title}}</h1>
     <p>Released Date: {{movie.released}}</p>    
     <p>Genre: <a href="{% url 'filtered-movies'%}?genre={{movie.genre.name}}">{{movie.genre.name}}</a></p>
     <p>Rating: {{movie.rating}}</p>
     <p>Description: {{movie.description}}</p>
+</div> 
+<div>
+    {% for comment in comments %}
+        <span>
+            <strong class='text-info'>{{ comment.author }} </strong>
+        </span>
+    {% endfor %}
+</div>
 {% endblock %}
