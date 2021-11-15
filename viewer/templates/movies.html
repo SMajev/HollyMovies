@@ -28,6 +28,12 @@
     </ul>
     </div>
 
+    <div>
+        <p class='text-right'>
+                <a class='btn btn-danger' href="{% url 'movie-create' %}">Add Movie</a>
+        </p>
+    </div>
+
     <div class='text-center'>
         Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}
     </div> 

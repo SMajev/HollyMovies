@@ -1,10 +1,37 @@
 from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse
 from django.views import View
-from django.views.generic import TemplateView, ListView, DetailView
+from django.views.generic import TemplateView, ListView, DetailView, FormView
 from django.core.paginator import Paginator
 from .models import Movie, Genre, CommentMovie
+from django.views.generic.edit import FormMixin
+from .forms import MovieForm
+from .models import Movie, Genre
+from django.urls import reverse_lazy
+from logging import getLogger
 
+LOGGER = getLogger()
+
+class MovieCreateView(FormView):
+    template_name = 'movie_form.html'
+    form_class = MovieForm
+    success_url = reverse_lazy('movies')
+
+    def form_valid(self, form):
+        result = super().form_valid(form)
+        cleaned_data = form.cleaned_data
+        Movie.objects.create(
+            title = cleaned_data['title'],
+            genre = cleaned_data['genre'],
+            rating = cleaned_data['rating'],
+            released = cleaned_data['released'],
+            description = cleaned_data['description']
+        )
+        return result
+
+    def form_invalid(self, form):
+        LOGGER.warning('User provides wrong data.')
+        return super().form_invalid(form)
 
 class GenresList(ListView):
     template_name = 'genres.html'
