@@ -21,7 +21,12 @@ class PastMonthField(forms.DateField):
         return date(year=result.year, month=result.month, day=1)
 
 
-class MovieForm(forms.Form):
+class MovieForm(forms.ModelForm):
+
+    class Meta:
+        model = Movie
+        fields = '__all__'
+
     title = forms.CharField(max_length=128, validators=[capitalized_validator])
     genre = forms.ModelChoiceField(queryset=Genre.objects)
     rating = forms.IntegerField(min_value=1, max_value=10)
@@ -47,9 +52,9 @@ class GenreForm(forms.Form):
 
 
 class CommentMovie(forms.ModelForm):
-    queryset = User.objects.all()
-    body = forms.CharField(widget=forms.Textarea(attrs={'rows':5, 'cols':30, 'style':'resize:none'}))
-
     class Meta:
         model = CommentMovieModel
         fields = ('body', )
+
+    queryset = User.objects.all()
+    body = forms.CharField(widget=forms.Textarea(attrs={'rows':5, 'cols':30, 'style':'resize:none'}))
