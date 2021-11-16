@@ -5,12 +5,30 @@ from django.views.generic import TemplateView, ListView, DetailView, FormView
 from django.core.paginator import Paginator
 from .models import Movie, Genre, CommentMovie
 from django.views.generic.edit import FormMixin
-from .forms import MovieForm
+from .forms import MovieForm, GenreForm
 from .models import Movie, Genre
 from django.urls import reverse_lazy
 from logging import getLogger
 
 LOGGER = getLogger()
+
+class GenreCreateView(FormView):
+    template_name = 'genre_form.html'
+    form_class = GenreForm
+    success_url = reverse_lazy('genres_lst')
+    def form_valid(self, form):
+        result = super().form_valid(form)
+        cleaned_data = form.cleaned_data
+        Genre.objects.create(
+            name = cleaned_data['name']
+        )
+        return result
+
+    def form_invalid(self, form):
+        LOGGER.warning('User provides wrong data.')
+        return super().form_invalid(form)
+
+
 
 class MovieCreateView(FormView):
     template_name = 'movie_form.html'

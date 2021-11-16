@@ -45,3 +45,6 @@ class MovieForm(forms.Form):
             raise ValidationError("Comedies aren't so good to be rated over 5.")
         return result
         
+
+class GenreForm(forms.Form):
+    name = forms.CharField(max_length=128, validators=[capitalized_validator])
