@@ -2,7 +2,7 @@ from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse
 from django.views import View
 from django.views.generic import TemplateView, ListView, DetailView, FormView
-from django.views.generic.edit import FormMixin
+from django.views.generic.edit import FormMixin, CreateView
 from django.core.paginator import Paginator
 from .models import Movie, Genre, CommentMovieModel
 from django.views.generic.edit import FormMixin
@@ -28,7 +28,11 @@ class GenreCreateView(FormView):
         LOGGER.warning('User provides wrong data.')
         return super().form_invalid(form)
 
-
+# class GenreCreateView(CreateView):
+#     model = Genre
+#     fields = '__all__'
+#     template_name = 'genre_form.html'
+#     success_url = reverse_lazy('genres_lst')
 
 class MovieCreateView(FormView):
     template_name = 'movie_form.html'

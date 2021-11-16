@@ -12,7 +12,7 @@ urlpatterns = [
     path('', MovieView.as_view(), name='movies'),
     path('<int:pk>', MovieDetailView.as_view(), name='movie-detail'),
     path('genre/', GenreMoviesView.as_view(), name='filtered-movies'),
-    path('new/', MovieCreateView.as_view(), name='movie-create'),
+    path('new_movie/', MovieCreateView.as_view(), name='movie-create'),
     path('new_genre/', GenreCreateView.as_view(), name='genre-create')
 ]
 
