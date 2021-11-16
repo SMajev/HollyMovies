@@ -11,7 +11,6 @@ class PostForm(forms.ModelForm):
 
 class CommentForm(forms.ModelForm):
     queryset = User.objects.all()
-    # author = forms.ModelChoiceField(queryset=queryset, widget=forms.Select)
     body = forms.CharField(widget=forms.Textarea(attrs={'rows':5, 'cols':30, 'style':'resize:none'}))
 
     class Meta:

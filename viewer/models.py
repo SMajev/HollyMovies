@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.utils import timezone
 
 class Genre(models.Model):
     name = models.CharField(max_length=128)
@@ -20,9 +21,18 @@ class Movie(models.Model):
     def __str__(self):
         return self.title
 
-class CommentMovie(models.Model):
+class CommentMovieModel(models.Model):
+    movie = models.ForeignKey(Movie, on_delete=models.CASCADE, related_name='comments')
     author = models.ForeignKey(User, on_delete=models.CASCADE)
-    movie = models.ForeignKey(Movie, on_delete=models.CASCADE)
-    publish = models.DateTimeField()
-    edit = models.DateTimeField()
     body = models.TextField()
+    publish = models.DateTimeField(default=timezone.now())
+    update = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        ordering = ('publish',)
+
+    def __str__(self):
+        return f'Comment add by {self.author} to post {self.movie}'
+    
+    def save(self, *args, **kwargs):
+        return super().save(*args, **kwargs)

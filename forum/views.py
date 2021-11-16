@@ -48,8 +48,7 @@ class DetailView(FormMixin, DetailView):
         context['form'] = self.get_form()
         context['pk'] = self.object.pk
         context['comments'] = Comment.objects.filter(
-            post=self.get_object()).order_by('-publish'
-        )
+            post=self.get_object()).order_by('-publish')
         return context
     
     def get_success_url(self, *args, **kwargs):

@@ -4,11 +4,10 @@ from django.views import View
 from django.views.generic import TemplateView, ListView, DetailView, FormView
 from django.views.generic.edit import FormMixin
 from django.core.paginator import Paginator
-from .models import Movie, Genre, CommentMovie
+from .models import Movie, Genre, CommentMovieModel
 from django.views.generic.edit import FormMixin
-from .forms import MovieForm, GenreForm
-from .models import Movie, Genre
-from django.urls import reverse_lazy
+from .forms import MovieForm, GenreForm, CommentMovie
+from django.urls import reverse_lazy, reverse
 from logging import getLogger
 
 LOGGER = getLogger()
@@ -58,18 +57,40 @@ class GenresList(ListView):
     context_object_name = 'genres'
 
 
-class MovieDetailView(DetailView):
-    template_name = 'movie_detail.html'
+class MovieDetailView(FormMixin, DetailView):
     model = Movie
+    form_class = CommentMovie
+    template_name = 'movie_detail.html'
     context_object_name = 'movie'
-    def get_context_data(self, *args, **kwargs):
-        context = super().get_context_data(*args, **kwargs)
+
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['movie'] = get_object_or_404(Movie, pk=self.kwargs['pk'])
+        context['form'] = self.get_form()
         context['pk'] = self.object.pk
-        context['movie'] = get_object_or_404(Movie,
-                                                pk=self.kwargs['pk']
-                                            )
-        context['comments'] = CommentMovie.objects.all()
+        context['comments'] = CommentMovieModel.objects.filter(
+            movie=self.get_object()).order_by('-publish')   
         return context
+    
+    def get_success_url(self, **kwargs):
+        return reverse_lazy('movie-detail', kwargs={'pk': self.kwargs['pk'] })
+
+    def post(self, request,*args, **kwargs):
+        self.object = self.get_object()
+        form = self.get_form()
+        if form.is_valid():
+            print(form.cleaned_data)
+            return self.form_valid(form)
+        else:
+            return self.form_invalid(form)
+
+    def form_valid(self, form):
+        form.instance.movie = self.get_object()
+        form.instance.author = self.request.user
+        form.save()
+        return super().form_valid(form)
+    
 
 
 
@@ -86,6 +107,8 @@ class MovieView(ListView):
         else:
             context = super().get_queryset().all()
         return context
+
+    
 
 
 class GenreMoviesView(ListView):

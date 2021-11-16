@@ -4,10 +4,6 @@ from django.core.exceptions import ValidationError
 import re
 from datetime import date
 
-class CommentMovie(forms.ModelForm):
-    class meta:
-        model = CommentMovie
-
 
 def capitalized_validator(value):
     if value[0].islower():
@@ -30,7 +26,7 @@ class MovieForm(forms.Form):
     genre = forms.ModelChoiceField(queryset=Genre.objects)
     rating = forms.IntegerField(min_value=1, max_value=10)
     released = PastMonthField()
-    description = forms.CharField(widget=forms.Textarea, required=False)
+    description = forms.CharField(widget=forms.Textarea(attrs={'rows':5, 'cols':30, 'style':'resize:none'}), required=False, )
 
     def clean_description(self):
         initial = self.cleaned_data['description']
@@ -48,3 +44,12 @@ class MovieForm(forms.Form):
 
 class GenreForm(forms.Form):
     name = forms.CharField(max_length=128, validators=[capitalized_validator])
+
+
+class CommentMovie(forms.ModelForm):
+    queryset = User.objects.all()
+    body = forms.CharField(widget=forms.Textarea(attrs={'rows':5, 'cols':30, 'style':'resize:none'}))
+
+    class Meta:
+        model = CommentMovieModel
+        fields = ('body', )
