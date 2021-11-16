@@ -5,14 +5,7 @@
     <h2>{{genre.name}}</h2>
 </div> 
 
-{% if request.user.is_authenticated %}
-<div>
-        <p class='text-right'>
-            <a class='btn btn-danger' href="{% url 'genre-update' pk=genre.pk %}">Edit Genre</a>
-            <a class='btn btn-danger' href="{% url 'genre-delete' pk=genre.pk %}">Delete Genre</a>
-        </p>
-</div>
-{% endif %}
+
 <div class='text-left'>
 <ul>
     {% for movie in movies %}
@@ -27,5 +20,14 @@
     {% endfor %}
 </ul>
 </div>
+
+{% if request.user.is_authenticated %}
+<div>
+        <p class='text-right'>
+            <a class='btn btn-danger' href="{% url 'genre-update' pk=genre.pk %}">Edit Genre</a>
+            <a class='btn btn-danger' href="{% url 'genre-delete' pk=genre.pk %}">Delete Genre</a>
+        </p>
+</div>
+{% endif %}
 
 {% endblock %}

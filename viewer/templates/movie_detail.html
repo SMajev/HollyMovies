@@ -7,7 +7,7 @@
     <p>Released Date: {{movie.released}}</p>    
     <p>Genre: <a href="{% url 'genre-detail' pk=movie.genre.pk %}">{{movie.genre.name}}</a></p>
     <p>Rating: {{movie.rating}}</p>
-    <p>Description: {{movie.description}}</p>
+    <p>Description:<br>{{movie.description}}</p>
 </div> 
 <div>
     <h6>Comments:</h6>

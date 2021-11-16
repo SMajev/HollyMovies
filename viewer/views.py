@@ -34,6 +34,7 @@ class GenreUpdateView(UpdateView):
     form_class = GenreForm
     success_url = reverse_lazy('genres_lst')
 
+
 class GenreDeleteView(DeleteView):
     template_name = 'movie_delete.html'
     model = Genre
@@ -73,6 +74,7 @@ class MovieCreateView(FormView):
     def form_invalid(self, form):
         LOGGER.warning('User provides wrong data.')
         return super().form_invalid(form)
+
 
 class GenresList(ListView):
     template_name = 'genres.html'
@@ -114,9 +116,7 @@ class MovieDetailView(FormMixin, DetailView):
         form.save()
         return super().form_valid(form)
     
-
-
-
+    
 class MovieView(ListView):
     template_name = 'movies.html'
     model = Movie
