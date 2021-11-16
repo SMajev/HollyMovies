@@ -4,9 +4,9 @@ from django.core.exceptions import ValidationError
 import re
 from datetime import date
 
-# class CommentMovie(forms.ModelForm):
-#     class meta:
-#         model = Pass
+class CommentMovie(forms.ModelForm):
+    class meta:
+        model = CommentMovie
 
 
 def capitalized_validator(value):

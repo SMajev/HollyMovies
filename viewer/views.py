@@ -2,6 +2,7 @@ from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse
 from django.views import View
 from django.views.generic import TemplateView, ListView, DetailView, FormView
+from django.views.generic.edit import FormMixin
 from django.core.paginator import Paginator
 from .models import Movie, Genre, CommentMovie
 from django.views.generic.edit import FormMixin
