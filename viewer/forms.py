@@ -47,7 +47,11 @@ class MovieForm(forms.ModelForm):
         return result
         
 
-class GenreForm(forms.Form):
+class GenreForm(forms.ModelForm):
+    class Meta:
+        model = Genre
+        fields = '__all__'
+
     name = forms.CharField(max_length=128, validators=[capitalized_validator])
 
 

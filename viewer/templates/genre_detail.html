@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div>
+    <h2>{{genre.name}}</h2>
+</div> 
+
+{% if request.user.is_authenticated %}
+<div>
+        <p class='text-right'>
+            <a class='btn btn-danger' href="{% url 'genre-update' pk=genre.pk %}">Edit Genre</a>
+            <a class='btn btn-danger' href="{% url 'genre-delete' pk=genre.pk %}">Delete Genre</a>
+        </p>
+</div>
+{% endif %}
+<div class='text-left'>
+<ul>
+    {% for movie in movies %}
+    <li>
+        <a href="{% url 'movie-detail' pk=movie.id %}"> 
+            <span>
+                <strong class='text-info'>{{ movie.title }}</strong>        
+                <small class='text-muted'>{{ movie.released.year }} - {{ movie.genre.name }}</small>
+            </span>
+        </a>     
+    </li>
+    {% endfor %}
+</ul>
+</div>
+
+{% endblock %}

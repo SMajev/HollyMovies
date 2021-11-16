@@ -5,7 +5,11 @@
     <ul>
         {% for genre in genres %}
         <li>
-            <h5><a href="{% url 'filtered-movies' %}?genre={{ genre.name }}">{{genre.name}}</a></h5>
+            <h5><a href="{% url 'genre-detail' pk=genre.id %}">{{genre.name}}</a></h5>
+            {% if request.user.is_authenticated %}
+                <a class='btn btn-danger' href="{% url 'genre-update' pk=genre.pk %}">Edit Genre</a>
+                <a class='btn btn-danger' href="{% url 'genre-delete' pk=genre.pk %}">Delete Genre</a>
+            {% endif %}
         </li>
         {% endfor %}
     </ul>

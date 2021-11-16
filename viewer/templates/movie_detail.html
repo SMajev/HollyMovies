@@ -5,7 +5,7 @@
     <img src="{{movie.image}}">
     <h1>{{movie.title}}</h1>
     <p>Released Date: {{movie.released}}</p>    
-    <p>Genre: <a href="{% url 'filtered-movies'%}?genre={{movie.genre.name}}">{{movie.genre.name}}</a></p>
+    <p>Genre: <a href="{% url 'genre-detail' pk=movie.genre.pk %}">{{movie.genre.name}}</a></p>
     <p>Rating: {{movie.rating}}</p>
     <p>Description: {{movie.description}}</p>
 </div> 
@@ -28,6 +28,7 @@
     {% endfor %}
   </ul>
 </div>
+
 <div>
     <form method="POST" action=''>
         {% csrf_token %}
@@ -36,3 +37,17 @@
     </form>
 </div>
 {% endblock %}
+
+{% if request.user.is_authenticated %}
+  <div>
+          <p class='text-right'>
+              <a class='btn btn-danger' href="{% url 'movie-update' pk=movie.pk %}">Edit Movie</a>
+          </p>
+  </div>
+
+  <div>
+          <p class='text-right'>
+              <a class='btn btn-danger' href="{% url 'movie-delete' pk=movie.pk %}">Delete Movie</a>
+          </p>
+  </div>
+{% endif %}

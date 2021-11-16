@@ -2,7 +2,7 @@ from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse
 from django.views import View
 from django.views.generic import TemplateView, ListView, DetailView, FormView
-from django.views.generic.edit import FormMixin, CreateView
+from django.views.generic.edit import FormMixin, CreateView, UpdateView, DeleteView
 from django.core.paginator import Paginator
 from .models import Movie, Genre, CommentMovieModel
 from django.views.generic.edit import FormMixin
@@ -28,11 +28,30 @@ class GenreCreateView(FormView):
         LOGGER.warning('User provides wrong data.')
         return super().form_invalid(form)
 
-# class GenreCreateView(CreateView):
-#     model = Genre
-#     fields = '__all__'
-#     template_name = 'genre_form.html'
-#     success_url = reverse_lazy('genres_lst')
+class GenreUpdateView(UpdateView):
+    template_name = 'genre_form.html'
+    model = Genre
+    form_class = GenreForm
+    success_url = reverse_lazy('genres_lst')
+
+class GenreDeleteView(DeleteView):
+    template_name = 'movie_delete.html'
+    model = Genre
+    success_url = reverse_lazy('genres_lst')
+
+
+class MovieUpdateView(UpdateView):
+    template_name = 'movie_form.html'
+    model = Movie
+    form_class = MovieForm
+    success_url = reverse_lazy('movies')
+
+
+class MovieDeleteView(DeleteView):
+    template_name = 'movie_delete.html'
+    model = Movie
+    success_url = reverse_lazy('movies')
+
 
 class MovieCreateView(FormView):
     template_name = 'movie_form.html'
@@ -112,21 +131,39 @@ class MovieView(ListView):
             context = super().get_queryset().all()
         return context
 
-    
 
+class GenreDetailView(DetailView):
+    model = Genre
+    template_name = 'genre_detail.html'
+    context_object_name = 'genre'
 
-class GenreMoviesView(ListView):
-    template_name = 'movies.html'
-    model = Movie
-    context_object_name = 'movies'
+    def get_success_url(self, **kwargs):
+        return reverse_lazy('movie-detail', kwargs={'pk': self.kwargs['pk'] })
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        genre = self.request.GET.get('genre')
-        context['movies'] = context['movies'].filter(genre__name=genre)
+        context['movies'] = Movie.objects.filter(genre=self.get_object())
         return context
+
+
+# class GenreMoviesView(ListView):
+#     template_name = 'movies.html'
+#     model = Movie
+#     context_object_name = 'movies'
+    
+#     def get_context_data(self, **kwargs):
+#         context = super().get_context_data(**kwargs)
+#         genre = self.request.GET.get('genre')
+#         context['movies'] = get_object_or_404(Movie, genre=self.kwargs['pk'])
+#         return context
         
 
+
+# class GenreCreateView(CreateView):
+#     model = Genre
+#     fields = '__all__'
+#     template_name = 'genre_form.html'
+#     success_url = reverse_lazy('genres_lst')
 
 
 
