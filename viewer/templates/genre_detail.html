@@ -5,6 +5,14 @@
     <h2>{{genre.name}}</h2>
 </div> 
 
+<div class='text-center'>
+    <a class='btn btn-link' href='{% url 'genre-detail' pk=genre.pk %}?s=title'>Sort by name ^</a>
+    <a class='btn btn-link' href='{% url 'genre-detail' pk=genre.pk %}?s=released'>Sort by date ^</a>
+    <a class='btn btn-link' href='{% url 'genre-detail' pk=genre.pk %}?s=rating'>Sort by rating ^</a>
+    <a class='btn btn-link' href='{% url 'genre-detail' pk=genre.pk %}?s=-title'>Sort by name v</a>
+    <a class='btn btn-link' href='{% url 'genre-detail' pk=genre.pk %}?s=-released'>Sort by date v</a>
+    <a class='btn btn-link' href='{% url 'genre-detail' pk=genre.pk %}?s=-rating'>Sort by rating v</a>
+</div>
 
 <div class='text-left'>
 <ul>

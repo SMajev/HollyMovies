@@ -74,8 +74,10 @@ class AddPostForm(LoginRequiredMixin, FormView):
     template_name = 'post_add.html'
     form_class = PostForm
     success_url = '/forum/'
+
     login_url = 'login'
     redirect_field_name = 'index'
+
     def form_valid(self, form):
         form.instance.author = self.request.user
         form.save()

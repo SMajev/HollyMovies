@@ -14,7 +14,12 @@
         <li>
         <a href="{% url 'logout' %}">Logout</a>
         </li>
-    </ul> 
+    </ul>
+    <div>
+
+        <a class='btn btn-danger' href="{% url 'user-update' pk=user.pk %}"> Update </a>
+
+    </div>
 {% endif %}
 
 {% endblock content %}

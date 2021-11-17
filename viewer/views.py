@@ -4,11 +4,12 @@ from django.views import View
 from django.views.generic import TemplateView, ListView, DetailView, FormView
 from django.views.generic.edit import FormMixin, CreateView, UpdateView, DeleteView
 from django.core.paginator import Paginator
-from .models import Movie, Genre, CommentMovieModel
-from django.views.generic.edit import FormMixin
-from .forms import MovieForm, GenreForm, CommentMovie
 from django.urls import reverse_lazy, reverse
 from logging import getLogger
+from django.views.generic.edit import FormMixin
+from .models import Movie, Genre, CommentMovieModel
+from .forms import MovieForm, GenreForm, CommentMovie
+
 
 LOGGER = getLogger()
 
@@ -141,9 +142,14 @@ class GenreDetailView(DetailView):
         return reverse_lazy('movie-detail', kwargs={'pk': self.kwargs['pk'] })
     
     def get_context_data(self, **kwargs):
+        sorting = self.request.GET.get('s') or ''
         context = super().get_context_data(**kwargs)
-        context['movies'] = Movie.objects.filter(genre=self.get_object())
+        if sorting:
+            context['movies'] = Movie.objects.filter(genre=self.get_object()).order_by(sorting)
+        else:
+            context['movies'] = Movie.objects.filter(genre=self.get_object())
         return context
+
 
 
 # class GenreMoviesView(ListView):
