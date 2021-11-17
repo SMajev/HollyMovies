@@ -11,18 +11,22 @@
         {% for field in form %}
             <div class='form-group'>
                 <div class='fieldWrapper'>
-                    <div class='row'>
-                        {{field.errors}}
 
-                        {% if field.label == 'Genre' %}
-                            <strong>{{field.label_tag}}</strong> <br>{{field}} <label><input type='text'></label>
-                        {% else %}
-                            <strong>{{field.label_tag}}</strong> <br>{{field}}
-                        {% endif %}
-                    </div>
+                    {% if field.label == 'Genre' %}
+                        {{field.errors}}
+                        <strong>{{field.label_tag}}</strong> <br>{{field}} <label class='text-muted'>Create new: <input id='newgen' type='text' name='newgen'></label>
+
+                    {% else %}
+                        {{field.errors}}
+                        <strong>{{field.label_tag}}</strong> <br>{{field}}
+
+                    {% endif %}
+
+                    <div>
                         {% if field.help_text %}
                             <p class="help">{{ field.help_text|safe }}</p>
                         {% endif %}
+                    </div>
 
                 </div>
             </div>

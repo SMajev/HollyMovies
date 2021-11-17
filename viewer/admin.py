@@ -7,7 +7,7 @@ from .models import Genre, Movie, CommentMovieModel
 @admin.register(Movie)
 class MovieAdmin(admin.ModelAdmin):
     list_display = (
-        'title', 'genre',
+        'title','slug', 'genre',
         'rating', 'released'
     )
     list_filter = ('genre', 'rating')

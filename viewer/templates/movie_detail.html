@@ -4,6 +4,7 @@
 <div>
     <img src="{{movie.image}}">
     <h1>{{movie.title}}</h1>
+    <p class='text-muted'>{{movie.slug}}</p>
     <p>Released Date: {{movie.released}}</p>    
     <p>Genre: <a href="{% url 'genre-detail' pk=movie.genre.pk %}">{{movie.genre.name}}</a></p>
     <p>Rating: {{movie.rating}}</p>

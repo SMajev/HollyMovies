@@ -58,19 +58,14 @@ class MovieDeleteView(DeleteView):
 class MovieCreateView(FormView):
     template_name = 'movie_form.html'
     form_class = MovieForm
-    second_form_class = GenreForm
     success_url = reverse_lazy('movies')
 
-    # def get_context_data(self, **kwargs):
-    #     context = super().get_context_data(**kwargs)
-    #     context["form"] = self.form_class()
-    #     context['form2'] = self.second_form_class()
-    #     return context
-    
-    
     def form_valid(self, form):
         result = super().form_valid(form)
         cleaned_data = form.cleaned_data
+        if not cleaned_data['genre']:
+            cleaned_data['genre'] = Genre.objects.create(name=self.request.POST['newgen'])
+
         Movie.objects.create(
             title = cleaned_data['title'],
             genre = cleaned_data['genre'],
@@ -114,7 +109,6 @@ class MovieDetailView(FormMixin, DetailView):
         self.object = self.get_object()
         form = self.get_form()
         if form.is_valid():
-            print(form.cleaned_data)
             return self.form_valid(form)
         else:
             return self.form_invalid(form)

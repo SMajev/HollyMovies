@@ -31,14 +31,15 @@ class PastMonthField(forms.DateField):
 
 
 class MovieForm(forms.ModelForm):
-
+    
     class Meta:
         model = Movie
-        fields = '__all__'
-
+        fields = ('title', 'genre', 'rating', 'released', 'description')
+        
+    
     title = forms.CharField(max_length=128, validators=[capitalized_validator])
-    genre = forms.ModelChoiceField(queryset=Genre.objects)
-    rating = forms.IntegerField(min_value=1, max_value=10)
+    genre = forms.ModelChoiceField(queryset=Genre.objects, required=False)
+    rating = forms.FloatField(min_value=1, max_value=10)
     released = PastMonthField()
     description = forms.CharField(widget=forms.Textarea(attrs={'rows':5, 'cols':30, 'style':'resize:none'}), required=False, )
 
@@ -49,15 +50,20 @@ class MovieForm(forms.ModelForm):
 
     def clean(self):
         result = super().clean()
-        if result['genre'].name == 'Comedy' and result['rating'] > 5:
-            self.add_error('genre', '')
-            self.add_error('rating', '')
-            raise ValidationError("Comedies aren't so good to be rated over 5.")
-        
+
+        try:
+            if result['genre'].name == 'Comedy' and result['rating'] > 5:
+                self.add_error('genre', '')
+                self.add_error('rating', '')
+                raise ValidationError("Comedies aren't so good to be rated over 5.")
+        except:
+            pass
         return result
         
-
-
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        for visible in self.visible_fields():
+            visible.field.widget.attrs['class'] = 'form-control'
 
 
 class CommentMovie(forms.ModelForm):
