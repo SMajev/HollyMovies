@@ -3,7 +3,7 @@ from django.conf.urls.static import static
 from hollymovies import settings
 from .views import (GenresList, MovieView, MovieDetailView, MovieCreateView,
                         GenreCreateView, MovieUpdateView, MovieDeleteView, 
-                        GenreUpdateView, GenreDeleteView, GenreDetailView
+                        GenreUpdateView, GenreDeleteView, GenreDetailView,
                     )
 
 urlpatterns = [
@@ -16,7 +16,7 @@ urlpatterns = [
     path('<int:pk>/mdelete', MovieDeleteView.as_view(), name='movie-delete'),
     path('new_genre/', GenreCreateView.as_view(), name='genre-create'),
     path('<int:pk>/gedit', GenreUpdateView.as_view(), name='genre-update'),
-    path('<int:pk>/gdelete', GenreDeleteView.as_view(), name='genre-delete')
+    path('<int:pk>/gdelete', GenreDeleteView.as_view(), name='genre-delete'),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, 

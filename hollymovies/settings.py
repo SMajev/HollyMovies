@@ -29,7 +29,8 @@ INSTALLED_APPS = [
     'viewer.apps.ViewerConfig',
     'forum.apps.ForumConfig',
     'index.apps.IndexConfig',
-    'login.apps.LoginConfig'
+    'login.apps.LoginConfig',
+    'shapeshifter'
 ]
 
 MIDDLEWARE = [

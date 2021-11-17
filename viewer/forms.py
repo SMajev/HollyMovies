@@ -4,10 +4,19 @@ from django.core.exceptions import ValidationError
 import re
 from datetime import date
 
-
 def capitalized_validator(value):
     if value[0].islower():
         raise ValidationError('First letter must be upper')
+
+class GenreForm(forms.ModelForm):
+    class Meta:
+        model = Genre
+        fields = '__all__'
+
+    name = forms.CharField(max_length=128, validators=[capitalized_validator])
+
+
+
 
 
 class PastMonthField(forms.DateField):
@@ -22,6 +31,7 @@ class PastMonthField(forms.DateField):
 
 
 class MovieForm(forms.ModelForm):
+
     class Meta:
         model = Movie
         fields = '__all__'
@@ -43,15 +53,11 @@ class MovieForm(forms.ModelForm):
             self.add_error('genre', '')
             self.add_error('rating', '')
             raise ValidationError("Comedies aren't so good to be rated over 5.")
+        
         return result
         
 
-class GenreForm(forms.ModelForm):
-    class Meta:
-        model = Genre
-        fields = '__all__'
 
-    name = forms.CharField(max_length=128, validators=[capitalized_validator])
 
 
 class CommentMovie(forms.ModelForm):

@@ -9,7 +9,7 @@ from logging import getLogger
 from django.views.generic.edit import FormMixin
 from .models import Movie, Genre, CommentMovieModel
 from .forms import MovieForm, GenreForm, CommentMovie
-
+from shapeshifter.views import MultiFormView 
 
 LOGGER = getLogger()
 
@@ -58,8 +58,16 @@ class MovieDeleteView(DeleteView):
 class MovieCreateView(FormView):
     template_name = 'movie_form.html'
     form_class = MovieForm
+    second_form_class = GenreForm
     success_url = reverse_lazy('movies')
 
+    # def get_context_data(self, **kwargs):
+    #     context = super().get_context_data(**kwargs)
+    #     context["form"] = self.form_class()
+    #     context['form2'] = self.second_form_class()
+    #     return context
+    
+    
     def form_valid(self, form):
         result = super().form_valid(form)
         cleaned_data = form.cleaned_data
