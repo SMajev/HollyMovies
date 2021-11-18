@@ -4,7 +4,7 @@ from django.urls import reverse_lazy
 from django.views.generic import DetailView, FormView
 from django.views.generic.edit import UpdateView
 from forum.models import User
-from .forms import UserCreate
+from .forms import UserForm
 from logging import getLogger
 from django.contrib.auth import views as auth_views
 
@@ -23,7 +23,7 @@ class ProfileView(DetailView):
 
 class UserCreateView(FormView):
     template_name = 'registration/register.html'
-    form_class = UserCreate
+    form_class = UserForm
     success_url = reverse_lazy('index')
     def form_valid(self, form):
         result = super().form_valid(form)
@@ -42,7 +42,7 @@ class UserCreateView(FormView):
 class UserUpdateView(UpdateView):
     template_name = 'registration/register.html'
     model = User
-    form_class = UserCreate
+    form_class = UserForm
     success_url = reverse_lazy('index')
     
     

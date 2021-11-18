@@ -21,9 +21,7 @@
           <small class="text-muted">{{ comment.body }}</small><br>
           <small class="text-muted">{{ comment.publish }}</small>
         </span>
-        <p>
-          {{ comment.content|safe }}
-        </p>
+        <p>{{ comment.content|safe }}</p>
     </div>
     </li>
     {% endfor %}
