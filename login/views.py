@@ -6,8 +6,15 @@ from django.views.generic.edit import UpdateView
 from forum.models import User
 from .forms import UserCreate
 from logging import getLogger
+from django.contrib.auth import views as auth_views
 
 LOGGER = getLogger()
+
+class CustomLoginView(auth_views.LoginView):
+    template_name = 'registration/login.html'
+
+class CustomLogoutView(auth_views.LogoutView):
+    template_name = 'registration/log_out.html'
 
 class ProfileView(DetailView):
     template_name = 'account/profile.html'

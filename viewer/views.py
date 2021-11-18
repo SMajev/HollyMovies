@@ -10,6 +10,8 @@ from django.views.generic.edit import FormMixin
 from .models import Movie, Genre, CommentMovieModel
 from .forms import MovieForm, GenreForm, CommentMovie
 from shapeshifter.views import MultiFormView 
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 LOGGER = getLogger()
 
@@ -29,33 +31,33 @@ class GenreCreateView(FormView):
         LOGGER.warning('User provides wrong data.')
         return super().form_invalid(form)
 
-class GenreUpdateView(UpdateView):
+class GenreUpdateView(LoginRequiredMixin, UpdateView):
     template_name = 'genre_form.html'
     model = Genre
     form_class = GenreForm
     success_url = reverse_lazy('genres_lst')
 
 
-class GenreDeleteView(DeleteView):
+class GenreDeleteView(LoginRequiredMixin, DeleteView):
     template_name = 'movie_delete.html'
     model = Genre
     success_url = reverse_lazy('genres_lst')
 
 
-class MovieUpdateView(UpdateView):
+class MovieUpdateView(LoginRequiredMixin, UpdateView):
     template_name = 'movie_form.html'
     model = Movie
     form_class = MovieForm
     success_url = reverse_lazy('movies')
 
 
-class MovieDeleteView(DeleteView):
+class MovieDeleteView(LoginRequiredMixin, DeleteView):
     template_name = 'movie_delete.html'
     model = Movie
     success_url = reverse_lazy('movies')
 
 
-class MovieCreateView(FormView):
+class MovieCreateView(LoginRequiredMixin, FormView):
     template_name = 'movie_form.html'
     form_class = MovieForm
     success_url = reverse_lazy('movies')
