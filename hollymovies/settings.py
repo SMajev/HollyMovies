@@ -44,6 +44,8 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'hollymovies.urls'
+SESSION_EXPIRE_AT_BROWSER_CLOSE = True
+
 
 TEMPLATES = [
     {

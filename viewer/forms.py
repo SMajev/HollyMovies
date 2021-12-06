@@ -16,9 +16,6 @@ class GenreForm(forms.ModelForm):
     name = forms.CharField(max_length=128, validators=[capitalized_validator])
 
 
-
-
-
 class PastMonthField(forms.DateField):
     def validate(self, value):
         super().validate(value)
@@ -34,7 +31,7 @@ class MovieForm(forms.ModelForm):
     
     class Meta:
         model = Movie
-        fields = ('title', 'genre', 'rating', 'released', 'description')
+        fields = ('title', 'genre', 'rating', 'released', 'description', 'image')
         
     
     title = forms.CharField(max_length=128, validators=[capitalized_validator])
@@ -42,7 +39,7 @@ class MovieForm(forms.ModelForm):
     rating = forms.FloatField(min_value=1, max_value=10)
     released = PastMonthField()
     description = forms.CharField(widget=forms.Textarea(attrs={'rows':5, 'cols':30, 'style':'resize:none'}), required=False, )
-
+    
     def clean_description(self):
         initial = self.cleaned_data['description']
         sentences = re.sub(r'\s*\.\s*', '.', initial).split('.')

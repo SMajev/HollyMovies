@@ -4,21 +4,23 @@
 {% if request.user.is_authenticated %}
     <ul class='menu'>  
         <li>
-            {{ user }}
-            
-            
+            <p><strong>User: </strong>{{ user }}</p>
         </li>
         <li>
-            {{ user.first_name }} {{ user.last_name }}
+            <p><strong>Email: </strong>{{ user.email }}</p>
         </li>
         <li>
-        <a href="{% url 'logout' %}">Logout</a>
+            <p><strong>Name: </strong>{{ user.first_name }}</p>
+        </li>
+        <li>
+            <p><strong>Surname: </strong>{{ user.last_name }}</p>
         </li>
     </ul>
     <div>
 
         <a class='btn btn-danger' href="{% url 'user-update' pk=user.pk %}"> Update </a>
-
+        <a class='btn btn-danger' href="{% url 'user-passwd' pk=user.pk %}">Change Password </a>
+        <a class='btn btn-danger' href="{% url 'logout' %}">Logout </a>
     </div>
 {% endif %}
 

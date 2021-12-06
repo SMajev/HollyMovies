@@ -4,7 +4,7 @@ from django.urls import reverse_lazy
 from django.views.generic import DetailView, FormView
 from django.views.generic.edit import UpdateView
 from forum.models import User
-from .forms import UserForm
+from .forms import UserForm, CustomPasswd
 from logging import getLogger
 from django.contrib.auth import views as auth_views
 
@@ -22,7 +22,7 @@ class ProfileView(DetailView):
     context_object_name = 'user'
 
 class UserCreateView(FormView):
-    template_name = 'registration/register.html'
+    template_name = 'registration/user_form.html'
     form_class = UserForm
     success_url = reverse_lazy('index')
     def form_valid(self, form):
@@ -40,10 +40,13 @@ class UserCreateView(FormView):
          return super().form_invalid(form)
 
 class UserUpdateView(UpdateView):
-    template_name = 'registration/register.html'
+    template_name = 'registration/user_form.html'
     model = User
     form_class = UserForm
     success_url = reverse_lazy('index')
     
-    
+class SubmitablePasswordView(auth_views.PasswordChangeView):
+    template_name = 'registration/user_passwd.html'
+    success_url = reverse_lazy('index')
+    form_class = CustomPasswd
     
