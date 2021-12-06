@@ -8,7 +8,7 @@ class UserForm(forms.ModelForm):
     class Meta:
         model = User
         fields = ('username', 'email', 'first_name', 'last_name')
-        
+
     username = forms.CharField(widget=forms.TextInput(
         attrs={'class': 'form-control', 'placeholder': 'Your username'
     }))
@@ -48,7 +48,7 @@ class SignUpForm(UserCreationForm):
         self.instance.is_active = False
         user = super().save(commit)
         biography = self.cleaned_data['biography']
-        profile = models.Profile(biography=biography, user=user)
+        profile = Profile(biography=biography, user=user)
         if commit:
             profile.save()
         return user
