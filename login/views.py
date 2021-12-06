@@ -1,10 +1,10 @@
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from django.urls import reverse_lazy
-from django.views.generic import DetailView, FormView
+from django.views.generic import DetailView, FormView, CreateView
 from django.views.generic.edit import UpdateView
 from forum.models import User
-from .forms import UserForm, CustomPasswd
+from .forms import UserForm, CustomPasswd, SignUpForm
 from logging import getLogger
 from django.contrib.auth import views as auth_views
 
@@ -50,3 +50,7 @@ class SubmitablePasswordView(auth_views.PasswordChangeView):
     success_url = reverse_lazy('index')
     form_class = CustomPasswd
     
+class SignUpView(CreateView):
+    template_name = 'registration/user_form.html'
+    success_url = reverse_lazy('index')
+    form_class = SignUpForm
