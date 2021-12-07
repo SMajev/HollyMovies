@@ -4,6 +4,7 @@ from django.urls import reverse_lazy
 from django.views.generic import DetailView, FormView, CreateView
 from django.views.generic.edit import UpdateView
 from forum.models import User
+from .models import Profile
 from .forms import UserForm, CustomPasswd, SignUpForm
 from logging import getLogger
 from django.contrib.auth import views as auth_views

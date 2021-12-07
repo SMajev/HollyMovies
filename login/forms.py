@@ -6,8 +6,8 @@ from django.db.transaction import atomic
 
 class UserForm(forms.ModelForm):
     class Meta:
-        model = User
-        fields = ('username', 'email', 'first_name', 'last_name')
+        model = Profile
+        fields = ('username', 'email', 'first_name', 'last_name', 'biography')
 
     username = forms.CharField(widget=forms.TextInput(
         attrs={'class': 'form-control', 'placeholder': 'Your username'
@@ -21,6 +21,15 @@ class UserForm(forms.ModelForm):
     last_name = forms.CharField(widget=forms.TextInput(
         attrs={'class': 'form-control', 'placeholder': 'Your last name'
     }))
+    biography = forms.CharField(label='Your story',
+                                    widget=forms.Textarea(attrs={'rows':5, 'cols':30, 'style':'resize:none'}),
+                                    min_length=20
+                                )
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(**kwargs)
+        for visible in self.visible_fields():
+            visible.field.widget.attrs['class'] = 'form-control'
 
 class CustomPasswd(PasswordChangeForm):
     def __init__(self, *args, **kwargs):

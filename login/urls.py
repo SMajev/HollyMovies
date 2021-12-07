@@ -13,5 +13,6 @@ urlpatterns = [
     path('profile/<int:pk>/edit', UserUpdateView.as_view(), name='user-update'),
     path('profile/<int:pk>/changepasswd', SubmitablePasswordView.as_view(), name='user-passwd'),
     path('profile/sign-up', SignUpView.as_view(), name='sign-up'),
+    path('profile/', include('django.contrib.auth.urls')),
     path('', include('django.contrib.auth.urls')),
 ]
