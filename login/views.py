@@ -1,15 +1,21 @@
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from django.urls import reverse_lazy
-from django.views.generic import DetailView, FormView, CreateView
+from django.views.generic import DetailView, FormView, CreateView, ListView
 from django.views.generic.edit import UpdateView
-from forum.models import User
 from .models import Profile
-from .forms import UserForm, CustomPasswd, SignUpForm
+from django.contrib.auth.models import User
+from .forms import UserForm, CustomPasswd
 from logging import getLogger
 from django.contrib.auth import views as auth_views
 
 LOGGER = getLogger()
+
+class UsersList(ListView):
+    template_name = 'account/users.html'
+    model = User
+    context_object_name = 'users'
+
 
 class CustomLoginView(auth_views.LoginView):
     template_name = 'registration/login.html'
@@ -22,23 +28,10 @@ class ProfileView(DetailView):
     model = User
     context_object_name = 'user'
 
-class UserCreateView(FormView):
+class UserCreateView(CreateView):
     template_name = 'registration/user_form.html'
     form_class = UserForm
     success_url = reverse_lazy('index')
-    def form_valid(self, form):
-        result = super().form_valid(form)
-        cleaned_data = form.cleaned_data
-        User.objects.create(
-            username = cleaned_data['username'],
-            password = cleaned_data['password'],
-            email = cleaned_data['email'],
-        )
-        return result
-
-    def form_invalid(self, form):
-         LOGGER.warnings('User provides wrong data.')
-         return super().form_invalid(form)
 
 class UserUpdateView(UpdateView):
     template_name = 'registration/user_form.html'
@@ -50,8 +43,3 @@ class SubmitablePasswordView(auth_views.PasswordChangeView):
     template_name = 'registration/user_passwd.html'
     success_url = reverse_lazy('index')
     form_class = CustomPasswd
-    
-class SignUpView(CreateView):
-    template_name = 'registration/user_form.html'
-    success_url = reverse_lazy('index')
-    form_class = SignUpForm

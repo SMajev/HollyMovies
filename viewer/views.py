@@ -11,14 +11,26 @@ from .models import Movie, Genre, CommentMovieModel
 from .forms import MovieForm, GenreForm, CommentMovie
 from shapeshifter.views import MultiFormView 
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin, UserPassesTestMixin
 
 LOGGER = getLogger()
 
-class GenreCreateView(FormView):
+
+
+
+class StaffRequiredMixin(UserPassesTestMixin):
+    def test_func(self):
+        return self.request.user.is_staff
+
+class SudoRequiredMixin(UserPassesTestMixin):
+    def test_func(self):
+        return self.request.user.is_superuser
+
+class GenreCreateView(StaffRequiredMixin, PermissionRequiredMixin, FormView):
     template_name = 'genre_form.html'
     form_class = GenreForm
     success_url = reverse_lazy('genres_lst')
+    permission_required = 'viewer.add_genre'
     def form_valid(self, form):
         result = super().form_valid(form)
         cleaned_data = form.cleaned_data
@@ -38,26 +50,27 @@ class GenreUpdateView(LoginRequiredMixin, UpdateView):
     success_url = reverse_lazy('genres_lst')
 
 
-class GenreDeleteView(LoginRequiredMixin, DeleteView):
+class GenreDeleteView(PermissionRequiredMixin, SudoRequiredMixin, DeleteView):
     template_name = 'movie_delete.html'
     model = Genre
     success_url = reverse_lazy('genres_lst')
+    permission_required = 'viewer.delete_genre'
 
 
-class MovieUpdateView(LoginRequiredMixin, UpdateView):
+class MovieUpdateView(PermissionRequiredMixin, UpdateView):
     template_name = 'movie_form.html'
     model = Movie
     form_class = MovieForm
     success_url = reverse_lazy('movies')
 
 
-class MovieDeleteView(LoginRequiredMixin, DeleteView):
+class MovieDeleteView(PermissionRequiredMixin, SudoRequiredMixin, DeleteView):
     template_name = 'movie_delete.html'
     model = Movie
     success_url = reverse_lazy('movies')
 
 
-class MovieCreateView(LoginRequiredMixin, FormView):
+class MovieCreateView(PermissionRequiredMixin, FormView):
     template_name = 'movie_form.html'
     form_class = MovieForm
     success_url = reverse_lazy('movies')
@@ -122,11 +135,12 @@ class MovieDetailView(FormMixin, DetailView):
         return super().form_valid(form)
     
     
-class MovieView(ListView):
+class MovieView(ListView, PermissionRequiredMixin):
     template_name = 'movies.html'
     model = Movie
     context_object_name = 'movies'
     paginate_by = 20
+    permission_required = 'viewer/view_movie'
 
     def get_queryset(self):
         sorting = self.request.GET.get('s') or ''

@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<ul>
+    {% for user in users  %}
+    <li>
+        <a href="{% url 'profile' pk=user.id %}"> {{user}}
+    </li>
+    {% endfor %}
+</ul>
+{% endblock  %}

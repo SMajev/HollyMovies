@@ -6,16 +6,18 @@
         {% for genre in genres %}
         <li>
             <h5><a href="{% url 'genre-detail' pk=genre.id %}">{{genre.name}}</a></h5>
-            {% if request.user.is_authenticated %}
+            {% if perms.viewer.change_genre %}
                 <a class='btn btn-danger' href="{% url 'genre-update' pk=genre.pk %}">Edit Genre</a>
                 <a class='btn btn-danger' href="{% url 'genre-delete' pk=genre.pk %}">Delete Genre</a>
             {% endif %}
         </li>
         {% endfor %}
     </ul>
+    {% if perms.viewer.add_genre %}
     <div>
         <p class='text-right'>
             <a class='btn btn-danger' href="{% url 'genre-create' %}">Add Genre</a>
         </p>
     </div>
+    {% endif %}
 {%endblock%}

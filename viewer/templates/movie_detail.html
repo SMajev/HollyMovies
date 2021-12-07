@@ -37,7 +37,7 @@
 </div>
 
 
-{% if request.user.is_authenticated %}
+{% if perms.viewer.change_movie %}
   <div>
           <p class='text-right'>
               <a class='btn btn-danger' href="{% url 'movie-update' pk=movie.pk %}">Edit Movie</a>
