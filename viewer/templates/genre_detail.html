@@ -29,7 +29,7 @@
 </ul>
 </div>
 
-{% if request.user.is_authenticated %}
+{% if perms.viewer.change_genre %}
 <div>
         <p class='text-right'>
             <a class='btn btn-danger' href="{% url 'genre-update' pk=genre.pk %}">Edit Genre</a>

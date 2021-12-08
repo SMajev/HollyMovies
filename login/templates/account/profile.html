@@ -15,16 +15,17 @@
         <li>
             <p><strong>Surname: </strong>{{ user.last_name }}</p>
         </li>
-        <li>
-            <p><strong>Biography: </strong>{{ user.biography}}</p>
-        </li>
     </ul>
     <div>
-
-        <a class='btn btn-danger' href="{% url 'user-update' pk=user.pk %}"> Update </a>
+        {% if perms.auth.change_user %}
+            <a class='btn btn-danger' href="{% url 'user-admin-update' pk=user.pk %}"> Admin Update </a>
+        {% else %}
+            <a class='btn btn-danger' href="{% url 'user-update' pk=user.pk %}"> Update </a>
+        {% endif %}
         <a class='btn btn-danger' href="{% url 'user-passwd' pk=user.pk %}">Change Password </a>
         <a class='btn btn-danger' href="{% url 'logout' %}">Logout </a>
     </div>
 {% endif %}
+
 
 {% endblock content %}

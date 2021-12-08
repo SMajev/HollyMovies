@@ -43,34 +43,34 @@ class GenreCreateView(StaffRequiredMixin, PermissionRequiredMixin, FormView):
         LOGGER.warning('User provides wrong data.')
         return super().form_invalid(form)
 
-class GenreUpdateView(LoginRequiredMixin, UpdateView):
+class GenreUpdateView(StaffRequiredMixin, PermissionRequiredMixin, UpdateView):
     template_name = 'genre_form.html'
     model = Genre
     form_class = GenreForm
     success_url = reverse_lazy('genres_lst')
+    permission_required = 'viewer.change_genre'
 
-
-class GenreDeleteView(PermissionRequiredMixin, SudoRequiredMixin, DeleteView):
+class GenreDeleteView(StaffRequiredMixin, PermissionRequiredMixin,  DeleteView):
     template_name = 'movie_delete.html'
     model = Genre
     success_url = reverse_lazy('genres_lst')
     permission_required = 'viewer.delete_genre'
 
 
-class MovieUpdateView(PermissionRequiredMixin, UpdateView):
+class MovieUpdateView(StaffRequiredMixin, PermissionRequiredMixin,  UpdateView):
     template_name = 'movie_form.html'
     model = Movie
     form_class = MovieForm
     success_url = reverse_lazy('movies')
 
 
-class MovieDeleteView(PermissionRequiredMixin, SudoRequiredMixin, DeleteView):
+class MovieDeleteView(StaffRequiredMixin, PermissionRequiredMixin,  DeleteView):
     template_name = 'movie_delete.html'
     model = Movie
     success_url = reverse_lazy('movies')
 
 
-class MovieCreateView(PermissionRequiredMixin, FormView):
+class MovieCreateView(StaffRequiredMixin, PermissionRequiredMixin,  FormView):
     template_name = 'movie_form.html'
     form_class = MovieForm
     success_url = reverse_lazy('movies')
