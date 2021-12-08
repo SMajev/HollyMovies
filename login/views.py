@@ -5,7 +5,7 @@ from django.views.generic import DetailView, FormView, CreateView, ListView
 from django.views.generic.edit import UpdateView
 from .models import Profile
 from django.contrib.auth.models import User
-from .forms import UserForm, CustomPasswd, UserAdminForm
+from .forms import UserForm, CustomPasswd, UserAdminForm, UserRegisterForm
 from logging import getLogger
 from django.contrib.auth import views as auth_views
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin, UserPassesTestMixin
@@ -20,7 +20,12 @@ class SudoRequiredMixin(UserPassesTestMixin):
     def test_func(self):
         return self.request.user.is_superuser
 
-class UsersList(ListView):
+class BothRequiredMixin(UserPassesTestMixin):
+    def test_func(self):
+        return self.request.user.is_superuser, self.request.user.is_staff
+
+
+class UsersList(PermissionRequiredMixin, BothRequiredMixin, ListView):
     template_name = 'account/users.html'
     model = User
     context_object_name = 'users'
@@ -42,7 +47,7 @@ class ProfileView(DetailView):
 
 class UserCreateView(CreateView):
     template_name = 'registration/user_form.html'
-    form_class = UserForm
+    form_class = UserRegisterForm
     success_url = reverse_lazy('index')
 
 
@@ -53,7 +58,7 @@ class UserUpdateView(UpdateView):
     success_url = reverse_lazy('index')
 
 
-class UserAdminView(UserUpdateView, SudoRequiredMixin):
+class UserAdminView(PermissionRequiredMixin, SudoRequiredMixin, UserUpdateView):
     form_class = UserAdminForm    
 
 

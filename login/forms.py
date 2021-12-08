@@ -56,7 +56,7 @@ class UserAdminForm(forms.ModelForm):
 class UserRegisterForm(UserCreationForm):
     class Meta:
         model = User
-        fields = ['username', 'email', 'password1', 'password2', 'first_name', 'last_name', 'groups']
+        fields = ['username', 'email', 'password1', 'password2']
         # fields = '__all__'
 
     username = forms.CharField(widget=forms.TextInput(
@@ -71,15 +71,8 @@ class UserRegisterForm(UserCreationForm):
     password2 = forms.CharField(widget=forms.TextInput(
         attrs={'class': 'form-control', 'placeholder': 'Password Confirmed'
     }))
-    first_name = forms.CharField(widget=forms.TextInput(
-        attrs={'class': 'form-control', 'placeholder': 'Your first name'
-    }))
-    last_name = forms.CharField(widget=forms.TextInput(
-        attrs={'class': 'form-control', 'placeholder': 'Your last name'
-    }))
-    groups = forms.ModelChoiceField(
-        queryset=Group.objects.all(), required=True
-    )
+
+
 
     def __init__(self, *args, **kwargs):
         super().__init__(**kwargs)
