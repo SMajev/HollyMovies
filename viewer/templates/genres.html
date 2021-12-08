@@ -2,15 +2,35 @@
 
 {% block content %}
     <h1>All Genres</h1>
-    <ul>
+    <body>
+        <div class='table-container'>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Name</th>
+                    {% if perms.viewer.change_genre %}
+                    <th scope="col">Update</th>
+                    <th scope="col">Delete</th>
+                    {% endif %}
+                </tr>
+                </thead>
+            <tbody>
         {% for genre in genres %}
-        <li>
+        <tr>
+            <th scope="row">{{ forloop.counter }}</th>
+            <td>
             <h5><a href="{% url 'genre-detail' pk=genre.id %}">{{genre.name}}</a></h5>
+            </td>
             {% if perms.viewer.change_genre %}
+            <td>
                 <a class='btn btn-danger' href="{% url 'genre-update' pk=genre.pk %}">Edit Genre</a>
+            </td>
+            <td>
                 <a class='btn btn-danger' href="{% url 'genre-delete' pk=genre.pk %}">Delete Genre</a>
+            </td>
             {% endif %}
-        </li>
+        </tr>
         {% endfor %}
     </ul>
     {% if perms.viewer.add_genre %}

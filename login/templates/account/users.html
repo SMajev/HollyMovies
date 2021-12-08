@@ -3,23 +3,42 @@
 {% block content %}
 <body>
     <div class='table-container'>
-    <table class="list-group">
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Username</th>
+                <th scope="col">Email</th>
+                <th scope="col">Firstname</th>
+                <th scope="col">Lastname</th>
+                {% if perms.accounts.change_profile %}
+                <th scope="col">Update</th>
+                <th scope="col">Delete</th>
+                <th scope="col">Change password</th>
+                {% endif %}
+            </tr>
+            </thead>
         <tbody>
             {% for user in users  %}
             <tr>
-                <td>
-                    <h5><a href="{% url 'profile' pk=user.id %}"> {{user}} </h5>
+                <th scope="row">{{ forloop.counter }}</th>
+                <td><a href="{% url 'profile' pk=user.id %}">{{ user.username }}</td>
+                <td>{{ user.email }}</td>
+                <td>{{ user.first_name }}</td>
+                <td>{{ user.last_name }}</td>
+                <td>{% if perms.accounts.change_profile %}
+                    <a class="btn btn-primary" href="{% url 'user-admin-update' pk=user.id %}">Update</a>
+                    {% endif %}
+                </td>
+                <td>{% if perms.accounts.change_profile %}
+                    <a class="btn btn-warning" href="{% url 'admin-passwd' pk=user.id %}">Change password</a>
+                    {% endif %}
+                </td>
+                <td>{% if perms.accounts.delete_profile %}
+                    <a class="btn btn-danger" href="{% url 'user-admin-delete' pk=user.id%}">Delete</a>
+                    {% endif %}
                 </td>
 
-                <td class='btn btn-danger'>
-                    <a href="{% url 'user-admin-update' pk=user.id %}">Change</a>
-                </td>
-                <td class='btn btn-danger'>
-                    <a href="{% url 'admin-passwd' pk=user.id %}">Passwd</a>
-                </td>
-                <td class='btn btn-danger'>
-                    <a href="{% url 'user-admin-delete' pk=user.id %}">Delete</a>
-                </td>
             </tr>
             {% endfor %}
         </div>

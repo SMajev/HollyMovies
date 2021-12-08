@@ -52,7 +52,12 @@ class UserUpdateView(UpdateView):
     template_name = 'registration/user_form.html'
     model = User
     form_class = UserForm
-    success_url = reverse_lazy('index')
+    success_url = reverse_lazy('users')
+
+
+class UserAdminView(PermissionRequiredMixin, SudoRequiredMixin, UserUpdateView):
+    form_class = UserAdminForm  
+    permission_required = 'auth.change_user'  
 
 
 class CustomUserDeleteView(PermissionRequiredMixin, DeleteView):
@@ -62,11 +67,6 @@ class CustomUserDeleteView(PermissionRequiredMixin, DeleteView):
     permission_required = 'login.change_profile'
 
 
-class UserAdminView(PermissionRequiredMixin, SudoRequiredMixin, UserUpdateView):
-    form_class = UserAdminForm  
-    permission_required = 'auth.change_user'  
-
-
 class SubmitablePasswordView(auth_views.PasswordChangeView):
     template_name = 'registration/user_passwd.html'
     success_url = reverse_lazy('index')
@@ -74,7 +74,14 @@ class SubmitablePasswordView(auth_views.PasswordChangeView):
 
 
 class AdminPasswordView(PermissionRequiredMixin, auth_views.PasswordChangeView):
+    model = User
     template_name = 'registration/admin_password.html'
     success_url = reverse_lazy('index')
     form_class = AdminPasswd
     permission_required = 'login.change_profile'
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs['user'] = User.objects.get(pk=self.kwargs['pk'])
+        return kwargs
+

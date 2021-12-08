@@ -71,8 +71,6 @@ class UserRegisterForm(UserCreationForm):
         attrs={'class': 'form-control', 'placeholder': 'Password Confirmed'
     }))
 
-
-
     def __init__(self, *args, **kwargs):
         super().__init__(**kwargs)
         for visible in self.visible_fields():
@@ -85,6 +83,7 @@ class CustomPasswd(PasswordChangeForm):
             visible.field.widget.attrs['class'] = 'form-control'
 
 class AdminPasswd(AdminPasswordChangeForm):
+    model = User
     def __init__(self, *args, **kwargs):
         super().__init__(**kwargs)
         for visible in self.visible_fields():
