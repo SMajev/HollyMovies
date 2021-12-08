@@ -16,15 +16,15 @@ from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMix
 LOGGER = getLogger()
 
 
-
-
 class StaffRequiredMixin(UserPassesTestMixin):
     def test_func(self):
         return self.request.user.is_staff
 
+
 class SudoRequiredMixin(UserPassesTestMixin):
     def test_func(self):
         return self.request.user.is_superuser
+
 
 class GenreCreateView(StaffRequiredMixin, PermissionRequiredMixin, FormView):
     template_name = 'genre_form.html'
@@ -43,12 +43,14 @@ class GenreCreateView(StaffRequiredMixin, PermissionRequiredMixin, FormView):
         LOGGER.warning('User provides wrong data.')
         return super().form_invalid(form)
 
+
 class GenreUpdateView(StaffRequiredMixin, PermissionRequiredMixin, UpdateView):
     template_name = 'genre_form.html'
     model = Genre
     form_class = GenreForm
     success_url = reverse_lazy('genres_lst')
     permission_required = 'viewer.change_genre'
+
 
 class GenreDeleteView(StaffRequiredMixin, PermissionRequiredMixin,  DeleteView):
     template_name = 'movie_delete.html'
@@ -62,18 +64,21 @@ class MovieUpdateView(StaffRequiredMixin, PermissionRequiredMixin,  UpdateView):
     model = Movie
     form_class = MovieForm
     success_url = reverse_lazy('movies')
+    permission_required = 'viewer.change_movie'
 
 
 class MovieDeleteView(StaffRequiredMixin, PermissionRequiredMixin,  DeleteView):
     template_name = 'movie_delete.html'
     model = Movie
     success_url = reverse_lazy('movies')
+    permission_required = 'viewer.delete_movie'
 
 
 class MovieCreateView(StaffRequiredMixin, PermissionRequiredMixin,  FormView):
     template_name = 'movie_form.html'
     form_class = MovieForm
     success_url = reverse_lazy('movies')
+    permission_required = 'viewer.add_movie'
 
     def form_valid(self, form):
         result = super().form_valid(form)
@@ -106,7 +111,6 @@ class MovieDetailView(FormMixin, DetailView):
     form_class = CommentMovie
     template_name = 'movie_detail.html'
     context_object_name = 'movie'
-
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)

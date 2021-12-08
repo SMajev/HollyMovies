@@ -11,7 +11,7 @@ urlpatterns = [
     
     path('movies/', include('viewer.urls')),
     path('forum/', include('forum.urls')),
-    path('log/', include('login.urls'))
+    path('profile/', include('login.urls'))
 
 ]
 

@@ -1,7 +1,7 @@
 from django import forms
 from .models import *
 from django.contrib.auth.models import User, Group
-from django.contrib.auth.forms import PasswordChangeForm, UserCreationForm
+from django.contrib.auth.forms import PasswordChangeForm, UserCreationForm, AdminPasswordChangeForm
 from django.db.transaction import atomic
 
 class UserForm(forms.ModelForm):
@@ -21,16 +21,17 @@ class UserForm(forms.ModelForm):
     last_name = forms.CharField(widget=forms.TextInput(
         attrs={'class': 'form-control', 'placeholder': 'Your last name'
     }))
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         for visible in self.visible_fields():
             visible.field.widget.attrs['class'] = 'form-control'
 
+
 class UserAdminForm(forms.ModelForm):
     class Meta:
         model = User
         fields = ['username', 'email', 'first_name', 'last_name', 'groups']
-        # fields = '__all__'
 
     username = forms.CharField(widget=forms.TextInput(
         attrs={'class': 'form-control', 'placeholder': 'Your username'
@@ -44,14 +45,12 @@ class UserAdminForm(forms.ModelForm):
     last_name = forms.CharField(widget=forms.TextInput(
         attrs={'class': 'form-control', 'placeholder': 'Your last name'
     }))
-    # groups = forms.ModelChoiceField(
-    #     queryset=Group.objects.all(), required=True
-    # )
 
     def __init__(self, *args, **kwargs):
         super().__init__(**kwargs)
         for visible in self.visible_fields():
             visible.field.widget.attrs['class'] = 'form-control'
+
 
 class UserRegisterForm(UserCreationForm):
     class Meta:
@@ -85,6 +84,11 @@ class CustomPasswd(PasswordChangeForm):
         for visible in self.visible_fields():
             visible.field.widget.attrs['class'] = 'form-control'
 
+class AdminPasswd(AdminPasswordChangeForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(**kwargs)
+        for visible in self.visible_fields():
+            visible.field.widget.attrs['class'] = 'form-control'
 
 # class SignUpForm(UserCreationForm):
 #     class Meta(UserCreationForm.Meta):

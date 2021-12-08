@@ -1,16 +1,16 @@
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from django.urls import reverse_lazy
-from django.views.generic import DetailView, FormView, CreateView, ListView
+from django.views.generic import DetailView, FormView, CreateView, ListView, DeleteView
 from django.views.generic.edit import UpdateView
 from .models import Profile
 from django.contrib.auth.models import User
-from .forms import UserForm, CustomPasswd, UserAdminForm, UserRegisterForm
+from .forms import UserForm, CustomPasswd, UserAdminForm, UserRegisterForm, AdminPasswd
 from logging import getLogger
 from django.contrib.auth import views as auth_views
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin, UserPassesTestMixin
-LOGGER = getLogger()
 
+LOGGER = getLogger()
 
 class StaffRequiredMixin(UserPassesTestMixin):
     def test_func(self):
@@ -20,15 +20,12 @@ class SudoRequiredMixin(UserPassesTestMixin):
     def test_func(self):
         return self.request.user.is_superuser
 
-class BothRequiredMixin(UserPassesTestMixin):
-    def test_func(self):
-        return self.request.user.is_superuser, self.request.user.is_staff
 
-
-class UsersList(PermissionRequiredMixin, BothRequiredMixin, ListView):
+class UsersList(PermissionRequiredMixin, ListView):
     template_name = 'account/users.html'
     model = User
     context_object_name = 'users'
+    permission_required = 'auth.view_user'
 
 
 class CustomLoginView(auth_views.LoginView):
@@ -58,11 +55,26 @@ class UserUpdateView(UpdateView):
     success_url = reverse_lazy('index')
 
 
+class CustomUserDeleteView(PermissionRequiredMixin, DeleteView):
+    template_name = 'account/user_delete.html'
+    model = User
+    success_url = reverse_lazy('users')
+    permission_required = 'login.change_profile'
+
+
 class UserAdminView(PermissionRequiredMixin, SudoRequiredMixin, UserUpdateView):
-    form_class = UserAdminForm    
+    form_class = UserAdminForm  
+    permission_required = 'auth.change_user'  
 
 
 class SubmitablePasswordView(auth_views.PasswordChangeView):
     template_name = 'registration/user_passwd.html'
     success_url = reverse_lazy('index')
     form_class = CustomPasswd
+
+
+class AdminPasswordView(PermissionRequiredMixin, auth_views.PasswordChangeView):
+    template_name = 'registration/admin_password.html'
+    success_url = reverse_lazy('index')
+    form_class = AdminPasswd
+    permission_required = 'login.change_profile'
