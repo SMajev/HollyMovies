@@ -143,7 +143,7 @@ class MovieView(ListView, PermissionRequiredMixin):
     template_name = 'movies.html'
     model = Movie
     context_object_name = 'movies'
-    paginate_by = 20
+    paginate_by = 10
     permission_required = 'viewer/view_movie'
 
     def get_queryset(self):

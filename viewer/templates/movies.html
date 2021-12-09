@@ -42,22 +42,29 @@
         <td>
             {{ movie.released.year }}
         </td>
+        {% if perms.viewer.change_movie %}
         <td>
             <a class='btn btn-primary' href="{% url 'movie-update' pk=movie.pk %}">Edit Movie</a>
         </td>
         <td>
             <a class='btn btn-primary' href="{% url 'movie-delete' pk=movie.pk %}">Delete Movie</a>
         </td>
+        {% endif %}
+    </tr>
         {% endfor %}
-    </ul>
-    </div>
+</div>
+<div>
     {% if perms.viewer.add_movie %}
-    <div>
+
         <p class='text-right'>
                 <a class='btn btn-danger' href="{% url 'movie-create' %}">Add Movie</a>
         </p>
-    </div>
+
     {% endif %}
+</div>
+
+
+
 
     <div class='text-center'>
         Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}

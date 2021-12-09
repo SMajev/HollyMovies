@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.urls import reverse_lazy
 from django.views.generic import DetailView, FormView, CreateView, ListView, DeleteView
@@ -45,6 +45,7 @@ class ProfileView(DetailView):
 class UserCreateView(CreateView):
     template_name = 'registration/user_form.html'
     form_class = UserRegisterForm
+    group_required = 'Users'
     success_url = reverse_lazy('index')
 
 
@@ -53,6 +54,9 @@ class UserUpdateView(UpdateView):
     model = User
     form_class = UserForm
     success_url = reverse_lazy('users')
+
+    def get_object(self):
+        return User.objects.get(pk=self.kwargs['pk'])
 
 
 class UserAdminView(PermissionRequiredMixin, SudoRequiredMixin, UserUpdateView):
