@@ -51,6 +51,52 @@ class UserAdminForm(forms.ModelForm):
         for visible in self.visible_fields():
             visible.field.widget.attrs['class'] = 'form-control'
 
+class UserRegisterForm(UserCreationForm):
+    class Meta(UserCreationForm.Meta):
+        fields = ['username', 'first_name']
+
+    biography = forms.CharField(label='Your story',
+                                    widget=forms.Textarea(attrs={'rows':5, 'cols':30, 'style':'resize:none'}),
+                                    min_length=20
+                                )
+    def __init__(self, *args, **kwargs):
+        super().__init__(**kwargs)
+        for visible in self.visible_fields():
+            visible.field.widget.attrs['class'] = 'form-control'
+             
+    @atomic
+    def save(self, commit=True):
+        self.instance.is_active = False
+        user = super().save(commit)
+        biography = self.cleaned_data['biography']
+        profile = Profile(biography=biography, user=user)
+        if commit:
+            profile.save()
+        return user
+
+
+class CustomPasswd(PasswordChangeForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(**kwargs)
+        for visible in self.visible_fields():
+            visible.field.widget.attrs['class'] = 'form-control'
+
+class AdminPasswd(AdminPasswordChangeForm):
+    model = User
+    def __init__(self, *args, **kwargs):
+        super().__init__(**kwargs)
+        for visible in self.visible_fields():
+            visible.field.widget.attrs['class'] = 'form-control'
+
+
+
+
+
+
+
+
+
+
 
 # class UserRegisterForm(UserCreationForm):
 #     class Meta:
@@ -76,41 +122,3 @@ class UserAdminForm(forms.ModelForm):
 #         for visible in self.visible_fields():
 #             visible.field.widget.attrs['class'] = 'form-control'
 
-
-
-class CustomPasswd(PasswordChangeForm):
-    def __init__(self, *args, **kwargs):
-        super().__init__(**kwargs)
-        for visible in self.visible_fields():
-            visible.field.widget.attrs['class'] = 'form-control'
-
-class AdminPasswd(AdminPasswordChangeForm):
-    model = User
-    def __init__(self, *args, **kwargs):
-        super().__init__(**kwargs)
-        for visible in self.visible_fields():
-            visible.field.widget.attrs['class'] = 'form-control'
-
-class UserRegisterForm(UserCreationForm):
-    class Meta(UserCreationForm.Meta):
-        fields = ['username', 'first_name']
-
-    biography = forms.CharField(label='Your story',
-                                    widget=forms.Textarea(attrs={'rows':5, 'cols':30, 'style':'resize:none'}),
-                                    min_length=20
-                                )
-
-    def __init__(self, *args, **kwargs):
-        super().__init__(**kwargs)
-        for visible in self.visible_fields():
-            visible.field.widget.attrs['class'] = 'form-control'
-
-    @atomic
-    def save(self, commit=True):
-        self.instance.is_active = False
-        user = super().save(commit)
-        biography = self.cleaned_data['biography']
-        profile = Profile(biography=biography, user=user)
-        if commit:
-            profile.save()
-        return user

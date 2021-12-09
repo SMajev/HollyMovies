@@ -16,5 +16,11 @@ urlpatterns = [
     path('<int:pk>/changepasswd', SubmitablePasswordView.as_view(), name='user-passwd'),
     path('<int:pk>/adminpasswd', AdminPasswordView.as_view(), name='admin-passwd'),
     path('users', UsersList.as_view(), name='users'),
+    
+    path('reset_passwd', auth_views.PasswordResetView.as_view(), name ='reset_password'),
+    path('reset_passwd_sent', auth_views.PasswordResetDoneView.as_view(), name ='password_reset_done'),
+    path('reset_passwd_confirm/<uidb64>/<token>', auth_views.PasswordResetConfirmView.as_view(), name ='password_reset_confirm'),
+    path('reset_passwd_complete', auth_views.PasswordResetCompleteView.as_view(), name ='password_reset_complete'),
+
     path('', include('django.contrib.auth.urls')),
 ]
