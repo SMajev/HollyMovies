@@ -9,6 +9,7 @@ from .forms import UserForm, CustomPasswd, UserAdminForm, UserRegisterForm, Admi
 from logging import getLogger
 from django.contrib.auth import views as auth_views
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin, UserPassesTestMixin
+from django.contrib.auth import views as auth_views
 
 LOGGER = getLogger()
 
@@ -89,3 +90,14 @@ class AdminPasswordView(PermissionRequiredMixin, auth_views.PasswordChangeView):
         kwargs['user'] = User.objects.get(pk=self.kwargs['pk'])
         return kwargs
 
+class CustomPasswordResetView(auth_views.PasswordResetView):
+    template_name = 'account/custom_password_reset_form.html'
+    
+class CustomPasswordResetDoneView(auth_views.PasswordResetDoneView):
+    template_name = 'account/custom_password_reset_done.html'
+
+class CustomPasswordResetConfirmView(auth_views.PasswordResetConfirmView):
+    template_name = 'account/custom_password_reset_confirm.html'
+
+class CustomPasswordResetCompleteView(auth_views.PasswordResetCompleteView):
+    template_name = 'account/custom_password_reset_complete.html'
